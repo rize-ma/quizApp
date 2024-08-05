@@ -1,39 +1,46 @@
 // @generated automatically by Diesel CLI.
 
 diesel::table! {
-    users (id) {
-        id -> Int4,
-        username -> Varchar,
-        icon_url -> Nullable<Varchar>,
-        correct_answers_count -> Int4,
-        created_at -> Timestamp,
-        updated_at -> Timestamp,
-    }
-}
-
-diesel::table! {
     quizzes (id) {
-        id -> Int4,
-        question -> Text,
+        id -> Uuid,
+        correct_option -> Int4,
+        created_by -> Uuid,
         option1 -> Text,
         option2 -> Text,
         option3 -> Text,
         option4 -> Text,
-        correct_option -> Int4,
-        created_by -> Int4,
-        created_at -> Timestamp,
-        updated_at -> Timestamp,
+        question -> Text,
+        created_at -> Nullable<Timestamp>,
+        updated_at -> Nullable<Timestamp>,
     }
 }
 
 diesel::table! {
     user_quiz_results (id) {
-        id -> Int4,
-        user_id -> Int4,
-        quiz_id -> Int4,
-        selected_option -> Int4,
+        id -> Uuid,
         is_correct -> Bool,
-        answered_at -> Timestamp,
+        quiz_id -> Nullable<Uuid>,
+        selected_option -> Int4,
+        user_id -> Nullable<Uuid>,
+        answered_at -> Nullable<Timestamp>,
+        created_at -> Nullable<Timestamp>,
+    }
+}
+
+diesel::table! {
+    users (id) {
+        id -> Uuid,
+        correct_answers_count -> Nullable<Int4>,
+        email -> Text,
+        #[max_length = 255]
+        icon_url -> Nullable<Varchar>,
+        self_introduction -> Nullable<Text>,
+        #[max_length = 255]
+        user_id -> Varchar,
+        #[max_length = 255]
+        username -> Varchar,
+        created_at -> Nullable<Timestamp>,
+        updated_at -> Nullable<Timestamp>,
     }
 }
 
@@ -41,4 +48,8 @@ diesel::joinable!(quizzes -> users (created_by));
 diesel::joinable!(user_quiz_results -> quizzes (quiz_id));
 diesel::joinable!(user_quiz_results -> users (user_id));
 
-diesel::allow_tables_to_appear_in_same_query!(quizzes, user_quiz_results, users,);
+diesel::allow_tables_to_appear_in_same_query!(
+    quizzes,
+    user_quiz_results,
+    users,
+);
