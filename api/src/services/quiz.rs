@@ -16,7 +16,7 @@ impl QuizService {
         quizzes.filter(id.eq(quiz_id)).first(&mut conn)
     }
 
-    pub fn get_all_quizzes(pool: web::Data<DbPool>) -> Result<Vec<Quiz>, Error> {
+    pub fn get_all_quiz(pool: web::Data<DbPool>) -> Result<Vec<Quiz>, Error> {
         let mut conn = pool.get().unwrap();
         quizzes.load::<Quiz>(&mut conn)
     }
