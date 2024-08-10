@@ -1,107 +1,54 @@
-use crate::models::Quiz;
-use crate::repository::RepositoryForDb;
-use crate::services::quiz;
-use actix_identity::Identity;
-use actix_web::web;
-use actix_web::{delete, get, post, put, HttpResponse, Responder, Scope};
-use serde_json::json;
-use validator::Validate;
+use crate::models::quiz::UpdateQuiz;
+use crate::services::quiz::QuizService;
+use crate::{config::db_connection::DbPool, models::quiz::NewQuiz};
+use actix_web::{delete, get, post, put, web, HttpResponse, Responder};
+use uuid::Uuid;
 
-pub fn get_scope() -> Scope {
-    web::scope("/api")
-        .service(get)
-        .service(create)
-        .service(update)
-        .service(delete)
-}
-
-#[get("/quize")]
-pub async fn get(user: Option<Identity>, repository: web::Data<RepositoryForDb>) -> impl Responder {
-    if user.is_none() {
-        return HttpResponse::Unauthorized().finish();
-    }
-
-    // let user_id = repository
-    //     .get(user.unwrap().id().unwrap())
-    //     .await
-    //     .expect("Failed getting user_id")
-    //     .id;
-
-    match result {
-        Ok(todos) => HttpResponse::Ok().json(json!({"status": "success", "todos": todos})),
-        Err(_) => HttpResponse::InternalServerError().finish(),
+#[get("")]
+async fn get_all_quiz(pool: web::Data<DbPool>) -> impl Responder {
+    match web::block(move || QuizService::get_all_quiz(pool)).await {
+        Ok(data) => HttpResponse::Ok().json(data.ok()),
+        Err(err) => HttpResponse::BadRequest().body(err.to_string()),
     }
 }
 
-#[post("/todos")]
-pub async fn create(
-    user: Option<Identity>,
-    repository: web::Data<RepositoryForDb>,
-    web::Json(payload): web::Json<NewTodo>,
-) -> impl Responder {
-    if user.is_none() {
-        return HttpResponse::Unauthorized().finish();
-    }
-
-    if let Err(validation_errors) = payload.validate() {
-        return HttpResponse::UnprocessableEntity().json(
-            json!({"status": "error", "validationErrors": validation_errors.field_errors()}),
-        );
-    }
-
-    let user_id = repository
-        .get(user.unwrap().id().unwrap())
-        .await
-        .expect("Failed getting user_id")
-        .id;
-
-    let result = repository.create_todo(payload, user_id).await;
-
-    match result {
-        Ok(todo) => HttpResponse::Created().json(json!({"status": "success", "todo": todo})),
-        _ => HttpResponse::InternalServerError().finish(),
+#[get("/{quiz_id}")]
+async fn get_quiz(pool: web::Data<DbPool>, quiz_id: web::Path<Uuid>) -> impl Responder {
+    match web::block(move || QuizService::get_quiz(pool, quiz_id.into_inner())).await {
+        Ok(data) => HttpResponse::Ok().json(data.ok()),
+        Err(err) => HttpResponse::BadRequest().body(err.to_string()),
     }
 }
 
-#[put("/todos/{todo_id}")]
-pub async fn update(
-    user: Option<Identity>,
-    repository: web::Data<RepositoryForDb>,
-    todo_id: web::Path<i32>,
-    web::Json(payload): web::Json<EditTodo>,
-) -> impl Responder {
-    if user.is_none() {
-        return HttpResponse::Unauthorized().finish();
-    }
-
-    if let Err(validation_errors) = payload.validate() {
-        return HttpResponse::UnprocessableEntity().json(
-            json!({"status": "error", "validationErrors": validation_errors.field_errors()}),
-        );
-    }
-
-    let result = repository.update_todo(payload, todo_id.into_inner()).await;
-
-    match result {
-        Ok(todo) => HttpResponse::Ok().json(json!({"status": "success", "todoEdited": todo})),
-        _ => HttpResponse::InternalServerError().finish(),
+#[post("")]
+async fn create_quiz(pool: web::Data<DbPool>, quiz_data: web::Json<NewQuiz>) -> impl Responder {
+    match web::block(move || QuizService::create_quiz(pool, quiz_data.into_inner())).await {
+        Ok(data) => HttpResponse::Ok().json(data.ok()),
+        Err(err) => HttpResponse::Ok().body(err.to_string()),
     }
 }
 
-#[delete("/todos/{todo_id}")]
-pub async fn delete(
-    user: Option<Identity>,
-    repository: web::Data<RepositoryForDb>,
-    todo_id: web::Path<i32>,
-) -> impl Responder {
-    if user.is_none() {
-        return HttpResponse::Unauthorized().finish();
+#[put("")]
+async fn update_quiz(pool: web::Data<DbPool>, quiz_data: web::Json<UpdateQuiz>) -> impl Responder {
+    match web::block(move || QuizService::update_quiz(pool, quiz_data.into_inner())).await {
+        Ok(data) => HttpResponse::Ok().json(data.ok()),
+        Err(err) => HttpResponse::BadRequest().body(err.to_string()),
     }
+}
 
-    let result = repository.delete_todo(todo_id.into_inner()).await;
-
-    match result {
-        Ok(todo) => HttpResponse::Ok().json(json!({"status": "success", "todoDeleted": todo})),
-        _ => HttpResponse::InternalServerError().finish(),
+#[delete("/{quiz_id}")]
+async fn delete_quiz(pool: web::Data<DbPool>, quiz_id: web::Path<Uuid>) -> impl Responder {
+    match web::block(move || QuizService::delete_quiz(pool, quiz_id.into_inner())).await {
+        Ok(data) => HttpResponse::Ok().json(data.ok()),
+        Err(err) => HttpResponse::BadRequest().body(err.to_string()),
     }
+}
+
+pub fn quiz_route() -> actix_web::Scope {
+    web::scope("/quizzes")
+        .service(get_all_quiz)
+        .service(get_quiz)
+        .service(create_quiz)
+        .service(update_quiz)
+        .service(delete_quiz)
 }
