@@ -8,21 +8,31 @@ use uuid::Uuid;
 #[diesel(check_for_backend(diesel::pg::Pg))]
 pub struct User {
     pub id: Uuid,
-    pub correct_answers_count: i32,
+    pub correct_answers_count: Option<i32>,
     pub email: String,
     pub icon_url: Option<String>,
+    pub password: String,
     pub self_introduction: Option<String>,
     pub user_id: String,
     pub username: String,
-    pub created_at: NaiveDateTime,
-    pub updated_at: NaiveDateTime,
+    pub created_at: Option<NaiveDateTime>,
+    pub updated_at: Option<NaiveDateTime>,
 }
 
 #[derive(Insertable, Serialize, Deserialize)]
 #[diesel(table_name = crate::schema::users)]
 #[diesel(check_for_backend(diesel::pg::Pg))]
-pub struct NewUser {
+pub struct LoginUser {
     pub email: String,
+    pub password: String,
+}
+
+#[derive(Insertable, Serialize, Deserialize)]
+#[diesel(table_name = crate::schema::users)]
+#[diesel(check_for_backend(diesel::pg::Pg))]
+pub struct SignupUser {
+    pub email: String,
+    pub password: String,
     pub user_id: String,
     pub username: String,
 }
