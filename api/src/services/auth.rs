@@ -1,19 +1,18 @@
 use crate::{
-    config::{db_connection::DbPool, jwt::create_token},
+    config::db_connection::DbPool,
     errors::auth::AuthError,
     models::user::{LoginUser, SignupUser, User},
     schema::users::dsl::{email, user_id, users},
     utils::auth::{find_user, hash_password},
 };
-use actix_web::{web, HttpResponse};
-use serde_json::json;
+use actix_web::web;
 
 use diesel::prelude::*;
 
 pub struct AuthService;
 
 impl AuthService {
-    pub fn login(pool: web::Data<DbPool>, form_data: LoginUser) -> Result<HttpResponse, AuthError> {
+    pub fn login(pool: web::Data<DbPool>, form_data: LoginUser) -> Result<User, AuthError> {
         let mut conn = pool.get().unwrap();
 
         let user = find_user(&mut conn, Box::new(email.eq(form_data.email.clone())))?
@@ -23,19 +22,10 @@ impl AuthService {
         if user.password != hashed_password {
             return Err(AuthError::IncorrectPassword);
         };
-
-        let token = create_token(user.id);
-
-        Ok(HttpResponse::Ok().json(json!({
-            "user": user,
-            "token": token
-        })))
+        Ok(user)
     }
 
-    pub fn signup(
-        pool: web::Data<DbPool>,
-        form_data: SignupUser,
-    ) -> Result<HttpResponse, AuthError> {
+    pub fn signup(pool: web::Data<DbPool>, form_data: SignupUser) -> Result<User, AuthError> {
         let mut conn = pool.get().unwrap();
 
         if find_user(&mut conn, Box::new(email.eq(form_data.email.clone())))?.is_some() {
@@ -55,17 +45,8 @@ impl AuthService {
 
         let user = diesel::insert_into(users)
             .values(&new_user)
-            .get_result::<User>(&mut conn);
-
-        match user {
-            Ok(user) => {
-                let token = create_token(user.id);
-                Ok(HttpResponse::Ok().json(json!({
-                    "user": new_user,
-                    "token": token
-                })))
-            }
-            Err(_) => return Err(AuthError::UserRegistrationError),
-        }
+            .get_result::<User>(&mut conn)
+            .map_err(|_| AuthError::UserRegistrationError)?;
+        Ok(user)
     }
 }

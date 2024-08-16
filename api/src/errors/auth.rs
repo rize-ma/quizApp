@@ -17,6 +17,7 @@ pub enum AuthError {
     IncorrectPassword,
     LoginFailed,
     PasswordHashingError,
+    UnknownError,
     UserIdAlreadyRegistered,
     UserRegistrationError,
 }
@@ -42,6 +43,9 @@ impl ResponseError for AuthError {
             AuthError::LoginFailed => (StatusCode::UNAUTHORIZED, "Login failed"),
             AuthError::PasswordHashingError => {
                 (StatusCode::INTERNAL_SERVER_ERROR, "Password hashing fails")
+            }
+            AuthError::UnknownError => {
+                (StatusCode::INTERNAL_SERVER_ERROR, "Unknown error occurred")
             }
             AuthError::UserIdAlreadyRegistered => (StatusCode::CONFLICT, "Registered userId"),
             AuthError::UserRegistrationError => (

@@ -1,8 +1,9 @@
+use ::quiz::config::db_connection::get_pool;
+use ::quiz::routes::auth::auth_route;
+use ::quiz::routes::quiz::quiz_route;
 use actix_web::middleware::Logger;
 use actix_web::{middleware, web, App, HttpServer};
 use pos::middleware::authentication_token;
-use quiz::config::db_connection::get_pool;
-use quiz::routes::quiz_routes;
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
@@ -10,11 +11,11 @@ async fn main() -> std::io::Result<()> {
         App::new()
             .wrap(Logger::default())
             //.wrap(middleware::NormalizePath::default())
-            //.service(auth_api::authentication_service())
+            .service(auth_route())
             .service(
                 web::scope("/api")
                     .wrap(authentication_token::Authentication)
-                    .service(quiz_routes::quiz_route()),
+                    .service(quiz_route()),
             )
             .app_data(web::Data::new(get_pool().clone()))
     })
