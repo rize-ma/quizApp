@@ -14,13 +14,9 @@ pub fn find_user(
     let user = crate::schema::users::table
         .filter(filter)
         .first::<User>(conn)
-        .optional();
-
-    match user {
-        Ok(Some(user)) => Ok(Some(user)),
-        Ok(None) => Ok(None),
-        Err(_) => return Err(AuthError::DatabaseError),
-    }
+        .optional()
+        .map_err(|_| AuthError::DatabaseError)?;
+    Ok(user)
 }
 
 pub fn hash_password(password: &[u8]) -> Result<String, AuthError> {

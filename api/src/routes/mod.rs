@@ -1,1 +1,2 @@
-pub mod quiz_routes;
+pub mod auth;
+pub mod quiz;
