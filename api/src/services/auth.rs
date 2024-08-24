@@ -13,7 +13,7 @@ pub struct AuthService;
 
 impl AuthService {
     pub fn login(pool: web::Data<DbPool>, form_data: LoginUser) -> Result<User, AuthError> {
-        let mut conn = pool.get().unwrap();
+        let mut conn = pool.get().map_err(|_| AuthError::UnknownError)?;
 
         let user = find_user(&mut conn, Box::new(email.eq(form_data.email.clone())))?
             .ok_or(AuthError::EmailNotFound)?;
@@ -26,7 +26,7 @@ impl AuthService {
     }
 
     pub fn signup(pool: web::Data<DbPool>, form_data: SignupUser) -> Result<User, AuthError> {
-        let mut conn = pool.get().unwrap();
+        let mut conn = pool.get().map_err(|_| AuthError::UnknownError)?;
 
         if find_user(&mut conn, Box::new(email.eq(form_data.email.clone())))?.is_some() {
             return Err(AuthError::EmailAlreadyRegistered);
