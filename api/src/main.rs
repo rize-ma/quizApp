@@ -3,14 +3,14 @@ use ::quiz::routes::auth::auth_route;
 use ::quiz::routes::quiz::quiz_route;
 use actix_web::middleware::Logger;
 use actix_web::{middleware, web, App, HttpServer};
-use pos::middleware::authentication_token;
+use quiz::middleware::authentication_token;
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
     HttpServer::new(move || {
         App::new()
             .wrap(Logger::default())
-            //.wrap(middleware::NormalizePath::default())
+            .wrap(middleware::NormalizePath::default())
             .service(auth_route())
             .service(
                 web::scope("/api")
