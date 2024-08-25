@@ -6,6 +6,7 @@ use crate::{
 };
 use actix_web::web;
 use diesel::prelude::*;
+use rand::seq::SliceRandom;
 use uuid::Uuid;
 
 pub struct QuizService;
@@ -24,6 +25,25 @@ impl QuizService {
         quizzes
             .load::<Quiz>(&mut conn)
             .map_err(|_| QuizError::QuizRetrievalError)
+    }
+
+    pub fn get_random_quizzes(
+        pool: web::Data<DbPool>,
+        count: usize,
+    ) -> Result<Vec<Quiz>, QuizError> {
+        let mut conn = pool.get().map_err(|_| QuizError::UnknownError)?;
+
+        let all_quizzes = quizzes
+            .load::<Quiz>(&mut conn)
+            .map_err(|_| QuizError::QuizRetrievalError)?;
+
+        let mut rng = rand::thread_rng();
+        let selected_quizzes = all_quizzes
+            .choose_multiple(&mut rng, count)
+            .cloned()
+            .collect();
+
+        Ok(selected_quizzes)
     }
 
     pub fn create_quiz(pool: web::Data<DbPool>, new_quiz: NewQuiz) -> Result<Quiz, QuizError> {
