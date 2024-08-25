@@ -4,7 +4,7 @@ use diesel::prelude::*;
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
-#[derive(Queryable, Identifiable, Associations, Serialize, Deserialize)]
+#[derive(Queryable, Identifiable, Associations, Serialize, Deserialize, Clone)]
 #[diesel(table_name = crate::schema::quizzes)]
 #[diesel(check_for_backend(diesel::pg::Pg))]
 #[belongs_to(User, foreign_key = "created_by")]
