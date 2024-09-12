@@ -4,6 +4,7 @@ use ::quiz::routes::quiz::quiz_route;
 use actix_web::middleware::Logger;
 use actix_web::{middleware, web, App, HttpServer};
 use quiz::middleware::authentication_token;
+use quiz::routes::quiz_results::quiz_result_route;
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
@@ -15,7 +16,8 @@ async fn main() -> std::io::Result<()> {
             .service(
                 web::scope("/api")
                     .wrap(authentication_token::Authentication)
-                    .service(quiz_route()),
+                    .service(quiz_route())
+                    .service(quiz_result_route()),
             )
             .app_data(web::Data::new(get_pool().clone()))
     })

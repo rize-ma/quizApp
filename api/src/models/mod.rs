@@ -1,3 +1,3 @@
 pub mod quiz;
+pub mod quiz_results;
 pub mod user;
-pub mod user_quiz_results;

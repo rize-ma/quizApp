@@ -1,6 +1,18 @@
 // @generated automatically by Diesel CLI.
 
 diesel::table! {
+    quiz_results (id) {
+        id -> Uuid,
+        answered_at -> Nullable<Timestamp>,
+        is_correct -> Bool,
+        quiz_id -> Uuid,
+        selected_option -> Int4,
+        user_id -> Uuid,
+        created_at -> Nullable<Timestamp>,
+    }
+}
+
+diesel::table! {
     quizzes (id) {
         id -> Uuid,
         correct_option -> Int4,
@@ -12,18 +24,6 @@ diesel::table! {
         question -> Text,
         created_at -> Nullable<Timestamp>,
         updated_at -> Nullable<Timestamp>,
-    }
-}
-
-diesel::table! {
-    user_quiz_results (id) {
-        id -> Uuid,
-        is_correct -> Bool,
-        quiz_id -> Nullable<Uuid>,
-        selected_option -> Int4,
-        user_id -> Nullable<Uuid>,
-        answered_at -> Nullable<Timestamp>,
-        created_at -> Nullable<Timestamp>,
     }
 }
 
@@ -46,12 +46,12 @@ diesel::table! {
     }
 }
 
+diesel::joinable!(quiz_results -> quizzes (quiz_id));
+diesel::joinable!(quiz_results -> users (user_id));
 diesel::joinable!(quizzes -> users (created_by));
-diesel::joinable!(user_quiz_results -> quizzes (quiz_id));
-diesel::joinable!(user_quiz_results -> users (user_id));
 
 diesel::allow_tables_to_appear_in_same_query!(
+    quiz_results,
     quizzes,
-    user_quiz_results,
     users,
 );

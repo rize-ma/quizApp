@@ -9,16 +9,37 @@ struct ResponseBody {
 
 #[derive(Debug, Serialize, Display)]
 pub enum AuthError {
+    #[display(fmt = "Could not create JWT token")]
     CreateJwtTokenError,
+
+    #[display(fmt = "There is a problem with the database")]
     DatabaseError,
+
+    #[display(fmt = "Could not decode JWT token")]
     DecodeJwtTokenError,
+
+    #[display(fmt = "Registered email address")]
     EmailAlreadyRegistered,
+
+    #[display(fmt = "Email address does not exist")]
     EmailNotFound,
+
+    #[display(fmt = "Password is incorrect")]
     IncorrectPassword,
+
+    #[display(fmt = "Login failed")]
     LoginFailed,
+
+    #[display(fmt = "Password hashing fails")]
     PasswordHashingError,
+
+    #[display(fmt = "Unknown error occurred")]
     UnknownError,
+
+    #[display(fmt = "Registered userId")]
     UserIdAlreadyRegistered,
+
+    #[display(fmt = "Could not save quiz results")]
     UserRegistrationError,
 }
 

@@ -5,25 +5,26 @@ use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
 #[derive(Queryable, Identifiable, Associations, Serialize, Deserialize)]
-#[diesel(table_name = crate::schema::user_quiz_results)]
+#[diesel(table_name = crate::schema::quiz_results)]
 #[diesel(check_for_backend(diesel::pg::Pg))]
 #[belongs_to(User, foreign_key = "user_id")]
 #[belongs_to(Quiz, foreign_key = "quiz_id")]
-pub struct UserQuizResult {
+pub struct QuizResult {
     pub id: Uuid,
-    pub user_id: Uuid,
+    pub answered_at: Option<NaiveDateTime>,
+    pub is_correct: bool,
     pub quiz_id: Uuid,
     pub selected_option: i32,
-    pub is_correct: bool,
-    pub answered_at: NaiveDateTime,
+    pub user_id: Uuid,
+    pub created_at: Option<NaiveDateTime>,
 }
 
 #[derive(Insertable, Serialize, Deserialize)]
-#[diesel(table_name =  crate::schema::user_quiz_results)]
+#[diesel(table_name =  crate::schema::quiz_results)]
 #[diesel(check_for_backend(diesel::pg::Pg))]
-pub struct NewUserQuizResult {
-    pub user_id: Uuid,
+pub struct NewQuizResult {
+    pub is_correct: bool,
     pub quiz_id: Uuid,
     pub selected_option: i32,
-    pub is_correct: bool,
+    pub user_id: Uuid,
 }
