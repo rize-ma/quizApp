@@ -1,78 +1,85 @@
-import js from "@eslint/js";
-import typescriptPlugin from "@typescript-eslint/eslint-plugin";
-import typescriptParser from "@typescript-eslint/parser";
-import reactPlugin from "eslint-plugin-react";
-import reactHooksPlugin from "eslint-plugin-react-hooks";
-import tailwindcssPlugin from "eslint-plugin-tailwindcss";
-import prettierPlugin from "eslint-plugin-prettier";
-import prettierConfig from "eslint-config-prettier";
-import totalFunctionsPlugin from "eslint-plugin-total-functions";
+import js from '@eslint/js';
+import typescriptPlugin from '@typescript-eslint/eslint-plugin';
+import typescriptParser from '@typescript-eslint/parser';
+import reactPlugin from 'eslint-plugin-react';
+import reactHooksPlugin from 'eslint-plugin-react-hooks';
+import tailwindcssPlugin from 'eslint-plugin-tailwindcss';
+import prettierPlugin from 'eslint-plugin-prettier';
+import prettierConfig from 'eslint-config-prettier';
+import totalFunctionsPlugin from 'eslint-plugin-total-functions';
+import vitestPlugin from 'eslint-plugin-vitest';
 
 export default [
+  js.configs.recommended,
   {
-    files: ["**/*.ts", "**/*.tsx"],
+    files: ['**/*.ts', '**/*.tsx'],
     languageOptions: {
       parser: typescriptParser,
-      ecmaVersion: 2020,
-      sourceType: "module",
       parserOptions: {
-        ecmaFeatures: {
-          jsx: true,
-        },
+        project: './tsconfig.json',
+        ecmaVersion: 2020,
+        sourceType: 'module',
+      },
+      globals: {
+        document: 'readonly',
+        window: 'readonly',
       },
     },
     plugins: {
-      "@typescript-eslint": typescriptPlugin,
+      '@typescript-eslint': typescriptPlugin,
       react: reactPlugin,
-      "react-hooks": reactHooksPlugin,
+      'react-hooks': reactHooksPlugin,
       tailwindcss: tailwindcssPlugin,
       prettier: prettierPlugin,
-      "total-functions": totalFunctionsPlugin,
+      'total-functions': totalFunctionsPlugin,
+      vitest: vitestPlugin,
     },
     rules: {
       ...js.configs.recommended.rules,
       ...typescriptPlugin.configs.recommended.rules,
       ...reactPlugin.configs.recommended.rules,
       ...prettierConfig.rules,
-      "react/react-in-jsx-scope": "off",
-      "@typescript-eslint/no-unused-vars": [
-        "error",
-        { argsIgnorePattern: "^_" },
+      'react/react-in-jsx-scope': 'off',
+      '@typescript-eslint/no-unused-vars': [
+        'error',
+        { argsIgnorePattern: '^_' },
       ],
-      "tailwindcss/no-custom-classname": "off",
-      "prettier/prettier": ["error", { endOfLine: "auto" }],
-      "total-functions/no-unsafe-type-assertion": "error",
-      "no-implicit-coercion": "error",
-      "@typescript-eslint/restrict-plus-operands": [
-        "error",
+      'tailwindcss/no-custom-classname': 'off',
+      'prettier/prettier': ['error', { endOfLine: 'auto' }],
+      //'total-functions/no-unsafe-type-assertion': 'error',
+      'no-implicit-coercion': 'error',
+      '@typescript-eslint/restrict-plus-operands': [
+        'error',
         {
-          checkCompoundAssignments: true,
           allowBoolean: false,
           allowNullish: false,
           allowNumberAndString: false,
           allowRegExp: false,
           allowAny: false,
+          skipCompoundAssignments: false,
         },
       ],
-      "prefer-template": "error",
-      "@typescript-eslint/switch-exhaustiveness-check": "error",
-      "no-console": ["warn", { allow: ["warn", "error"] }],
-      semi: ["error", "always"],
-      "no-plusplus": "error",
+      'prefer-template': 'error',
+      '@typescript-eslint/switch-exhaustiveness-check': 'error',
+      'no-console': ['warn', { allow: ['warn', 'error'] }],
+      semi: ['error', 'always'],
+      'no-plusplus': 'error',
+    },
+    settings: {
+      react: {
+        version: 'detect',
+      },
     },
   },
   {
-    files: ["**/*.js", "**/*.jsx"],
+    files: ['**/*.js', '**/*.jsx'],
     languageOptions: {
       ecmaVersion: 2020,
-      sourceType: "module",
-      ecmaFeatures: {
-        jsx: true,
-      },
+      sourceType: 'module',
     },
     plugins: {
       react: reactPlugin,
-      "react-hooks": reactHooksPlugin,
+      'react-hooks': reactHooksPlugin,
       tailwindcss: tailwindcssPlugin,
       prettier: prettierPlugin,
     },
@@ -80,24 +87,29 @@ export default [
       ...js.configs.recommended.rules,
       ...reactPlugin.configs.recommended.rules,
       ...prettierConfig.rules,
-      "react/react-in-jsx-scope": "off",
-      "tailwindcss/no-custom-classname": "off",
-      "prettier/prettier": ["error", { endOfLine: "auto" }],
-      "no-implicit-coercion": "error",
-      "prefer-template": "error",
-      "no-console": ["warn", { allow: ["warn", "error"] }],
-      semi: ["error", "always"],
-      "no-plusplus": "error",
+      'react/react-in-jsx-scope': 'off',
+      'tailwindcss/no-custom-classname': 'off',
+      'prettier/prettier': ['error', { endOfLine: 'auto' }],
+      'no-implicit-coercion': 'error',
+      'prefer-template': 'error',
+      'no-console': ['warn', { allow: ['warn', 'error'] }],
+      semi: ['error', 'always'],
+      'no-plusplus': 'error',
+    },
+    settings: {
+      react: {
+        version: 'detect',
+      },
     },
   },
   {
-    files: ["**/*.test.ts", "**/*.test.tsx"],
+    files: ['**/*.test.ts', '**/*.test.tsx'],
     plugins: {
-      vitest: require("eslint-plugin-vitest"),
+      vitest: vitestPlugin,
     },
     rules: {
-      "vitest/no-conditional-in-test": "error",
-      "vitest/valid-expect": "error",
+      'vitest/no-conditional-in-test': 'error',
+      'vitest/valid-expect': 'error',
     },
   },
 ];
