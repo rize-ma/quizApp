@@ -12,6 +12,9 @@ import vitestPlugin from 'eslint-plugin-vitest';
 export default [
   js.configs.recommended,
   {
+    ignores: ['dist/', 'vite.config.d.ts'],
+  },
+  {
     files: ['**/*.ts', '**/*.tsx'],
     languageOptions: {
       parser: typescriptParser,
