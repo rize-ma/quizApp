@@ -22,12 +22,14 @@
     /* import alias */
     "baseUrl": "./",
     "paths": {
-      "@/": ["src/*"]
+      "@/components/*": ["./src/components/*"],
+      "@/": ["./src/*"]
     }
   },
   "include": [
     "src/**/*.ts",
     "src/**/*.tsx",
+    "lib/*.ts",
     ".storybook/**/*.ts",
     ".storybook/**/*.tsx",
     "vite.config.ts"
