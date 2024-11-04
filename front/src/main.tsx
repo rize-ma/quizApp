@@ -2,19 +2,12 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import './index.css';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import { Button } from './components/ui/button/button';
-import { ChevronsRight } from 'lucide-react';
+import Auth from './page/auth';
+//import Login from './components/form/Login';
 const router = createBrowserRouter([
   {
     path: '/',
-    element: (
-      <div className="flex">
-        <Button className="m-5">
-          <ChevronsRight color="#ffffff" strokeWidth={2} />
-          次へ
-        </Button>
-      </div>
-    ),
+    element: <Auth />,
   },
 ]);
 
