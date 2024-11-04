@@ -2,14 +2,17 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import './index.css';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import { Input } from './components/ui/input';
+import { Button } from './components/ui/button/button';
+import { ChevronsRight } from 'lucide-react';
 const router = createBrowserRouter([
   {
     path: '/',
     element: (
-      <div>
-        <Input />
-        <div className="w-full bg-orange-700"></div>
+      <div className="flex">
+        <Button className="m-5">
+          <ChevronsRight color="#ffffff" strokeWidth={2} />
+          次へ
+        </Button>
       </div>
     ),
   },
