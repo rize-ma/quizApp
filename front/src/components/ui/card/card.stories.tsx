@@ -7,7 +7,7 @@ import {
   CardHeader,
   CardTitle,
 } from './card';
-import { ChevronsRight } from 'lucide-react';
+import { ChevronsLeft, ChevronsRight } from 'lucide-react';
 import { Input } from '../input/input';
 import { Button } from '../button/button';
 
@@ -121,8 +121,12 @@ export const RegisterCard2: Story = {
           <Input className="mt-12" placeholder="ユーザーIDを入力" />
           <Input className="mt-10" placeholder="ユーザー名を入力" />
         </CardContent>
-        <CardFooter>
-          <Button className="w-full mt-5" type="submit">
+        <CardFooter className="flex justify-between items-center pt-10">
+          <Button>
+            <ChevronsLeft size="23" color="#ffffff" strokeWidth={2} />
+            戻る
+          </Button>
+          <Button className="w-5/12" type="submit">
             登録
           </Button>
         </CardFooter>
