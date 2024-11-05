@@ -54,7 +54,9 @@ const UserRegister: FC<UserRegisterProps> = ({ onChangeLogin }) => {
         </CardContent>
         <CardFooter>
           <div
-            className={clsx('flex justify-end w-full', { hidden: step === 2 })}
+            className={clsx('flex justify-end pt-10 w-full', {
+              hidden: step === 2,
+            })}
           >
             <Button onClick={onClickNext}>
               <ChevronsRight size="23" color="#ffffff" strokeWidth={2} />

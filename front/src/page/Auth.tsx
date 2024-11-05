@@ -2,6 +2,7 @@ import { useState } from 'react';
 import UserRegister from '../components/form/UserRegister';
 import Login from '@/components/form/Login';
 import { clsx } from 'clsx';
+import { Helmet } from 'react-helmet-async';
 
 const Auth = () => {
   type FormType = 'login' | 'register';
@@ -14,6 +15,9 @@ const Auth = () => {
   };
   return (
     <>
+      <Helmet>
+        <title>{activeForm === 'login' ? 'ログイン' : 'ユーザー登録'}</title>
+      </Helmet>
       <div
         className={clsx('flex items-center justify-center h-screen', {
           hidden: activeForm === 'register',
