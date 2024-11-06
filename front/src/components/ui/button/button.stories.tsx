@@ -17,7 +17,7 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
-    children: 'デフォルト',
+    children: 'ボタン',
     disabled: false,
     onClick: action('default click'),
     className: '',
