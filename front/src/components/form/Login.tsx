@@ -35,7 +35,7 @@ const Login: FC<LoginProps> = ({ onChangeRegister }) => {
       method: 'post',
       url: 'http://127.0.0.1:8080/auth/login',
       data: data,
-    }).then((res) => console.log(res));
+    });
   };
   return (
     <Card className="w-96">
