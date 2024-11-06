@@ -6,7 +6,7 @@ use crate::services::auth::AuthService;
 use actix_web::{post, web, HttpResponse, Responder};
 use serde_json::json;
 
-#[post("login")]
+#[post("/login")]
 async fn login(pool: web::Data<DbPool>, form_data: web::Json<LoginUser>) -> impl Responder {
     match web::block(move || AuthService::login(pool, form_data.into_inner())).await {
         Ok(Ok(user)) => {
@@ -21,7 +21,7 @@ async fn login(pool: web::Data<DbPool>, form_data: web::Json<LoginUser>) -> impl
     }
 }
 
-#[post("sinup")]
+#[post("/signup")]
 async fn signup(pool: web::Data<DbPool>, form_data: web::Json<SignupUser>) -> impl Responder {
     match web::block(move || AuthService::signup(pool, form_data.into_inner())).await {
         Ok(Ok(user)) => {
@@ -37,5 +37,5 @@ async fn signup(pool: web::Data<DbPool>, form_data: web::Json<SignupUser>) -> im
 }
 
 pub fn auth_route() -> actix_web::Scope {
-    web::scope("").service(login).service(signup)
+    web::scope("/auth").service(login).service(signup)
 }
