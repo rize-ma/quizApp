@@ -59,7 +59,7 @@ impl ResponseError for AuthError {
                 "Could not decode JWT token",
             ),
             AuthError::EmailAlreadyRegistered => (StatusCode::CONFLICT, "Registered email address"),
-            AuthError::EmailNotFound => (StatusCode::NOT_FOUND, "Email address does not exist"),
+            AuthError::EmailNotFound => (StatusCode::UNAUTHORIZED, "Email address does not exist"),
             AuthError::IncorrectPassword => (StatusCode::UNAUTHORIZED, "Password is incorrect"),
             AuthError::LoginFailed => (StatusCode::UNAUTHORIZED, "Login failed"),
             AuthError::PasswordHashingError => {
