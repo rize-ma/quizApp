@@ -30,14 +30,14 @@ pub struct LoginUser {
 #[derive(Insertable, Serialize, Deserialize)]
 #[diesel(table_name = crate::schema::users)]
 #[diesel(check_for_backend(diesel::pg::Pg))]
-pub struct SignupUser {
+pub struct UserRegister {
     pub email: String,
     pub password: String,
     pub user_id: String,
     pub username: String,
 }
 
-#[derive(Insertable, Serialize, Deserialize)]
+#[derive(Debug, Insertable, Serialize, Deserialize)]
 #[diesel(table_name = crate::schema::users)]
 #[diesel(check_for_backend(diesel::pg::Pg))]
 pub struct UserFilter {

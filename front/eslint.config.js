@@ -12,6 +12,16 @@ import vitestPlugin from 'eslint-plugin-vitest';
 export default [
   js.configs.recommended,
   {
+    languageOptions: {
+      globals: {
+        document: 'readonly',
+        window: 'readonly',
+        localStorage: 'readonly',
+      },
+    },
+    ignores: ['dist/', 'vite.config.d.ts'],
+  },
+  {
     ignores: ['dist/', 'vite.config.d.ts'],
   },
   {
