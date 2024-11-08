@@ -16,7 +16,7 @@ async fn get_all_user(pool: web::Data<DbPool>) -> impl Responder {
 #[get("/filter")]
 async fn find_user_by_user_id(
     pool: web::Data<DbPool>,
-    filter: web::Json<UserFilter>,
+    filter: web::Query<UserFilter>,
 ) -> impl Responder {
     if let Some(user_id) = filter.user_id.clone() {
         return match web::block(move || UserService::find_user_by_user_id(pool, user_id)).await {
@@ -34,19 +34,8 @@ async fn find_user_by_user_id(
     }
     Ok(HttpResponse::BadRequest().body("No valid filter provided".to_string()))
 }
-
-#[get("/email/{email}")]
-async fn find_user_by_email(pool: web::Data<DbPool>, email: web::Path<String>) -> impl Responder {
-    match web::block(move || UserService::find_user_by_email(pool, email.into_inner())).await {
-        Ok(Ok(data)) => Ok(HttpResponse::Ok().json(data)),
-        Ok(Err(err)) => Err(err),
-        Err(_) => Err(UserError::UnknownError),
-    }
-}
-
 pub fn user_route() -> actix_web::Scope {
     web::scope("/users")
         .service(get_all_user)
         .service(find_user_by_user_id)
-        .service(find_user_by_email)
 }

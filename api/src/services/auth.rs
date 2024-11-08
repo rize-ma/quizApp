@@ -1,7 +1,7 @@
 use crate::{
     config::db_connection::DbPool,
     errors::auth::AuthError,
-    models::user::{LoginUser, SignupUser, User},
+    models::user::{LoginUser, User, UserRegister},
     schema::users::dsl::{email, user_id, users},
     utils::auth::{find_user, hash_password},
 };
@@ -25,7 +25,10 @@ impl AuthService {
         Ok(user)
     }
 
-    pub fn signup(pool: web::Data<DbPool>, form_data: SignupUser) -> Result<User, AuthError> {
+    pub fn user_register(
+        pool: web::Data<DbPool>,
+        form_data: UserRegister,
+    ) -> Result<User, AuthError> {
         let mut conn = pool.get().map_err(|_| AuthError::UnknownError)?;
 
         if find_user(&mut conn, Box::new(email.eq(form_data.email.clone())))?.is_some() {
@@ -36,7 +39,7 @@ impl AuthService {
         }
 
         let hashed_password = hash_password(&form_data.password.as_bytes())?;
-        let new_user = SignupUser {
+        let new_user = UserRegister {
             email: form_data.email,
             password: hashed_password,
             user_id: form_data.user_id,
