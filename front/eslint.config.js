@@ -12,10 +12,14 @@ import vitestPlugin from 'eslint-plugin-vitest';
 export default [
   js.configs.recommended,
   {
-    env: {
-      browser: true,
-      es2021: true,
+    languageOptions: {
+      globals: {
+        document: 'readonly',
+        window: 'readonly',
+        localStorage: 'readonly',
+      },
     },
+    ignores: ['dist/', 'vite.config.d.ts'],
   },
   {
     ignores: ['dist/', 'vite.config.d.ts'],

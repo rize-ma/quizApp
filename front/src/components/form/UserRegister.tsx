@@ -61,23 +61,31 @@ const UserRegister: FC<UserRegisterProps> = ({ onChangeLogin }) => {
         localStorage.setItem('authToken', token);
       })
       .catch((err) => {
-        err.response.data.message === 'Registered email address'
-          ? setEmailErrorMessage('使用済みのメールアドレスです')
-          : setEmailErrorMessage('');
-
-        err.response.data.message === 'Registered userId'
-          ? setUserIdErrorMessage('使用済みのユーザーIDです')
-          : setUserIdErrorMessage('');
+        if (err.response.data.message === 'Registered email address') {
+          setEmailErrorMessage('使用済みのメールアドレスです');
+        } else {
+          setEmailErrorMessage('');
+        }
+        if (err.response.data.message === 'Registered userId') {
+          setUserIdErrorMessage('使用済みのユーザーIDです');
+        } else {
+          setUserIdErrorMessage('');
+        }
       });
   };
-  useEffect(() => {
-    errors.email?.message
-      ? setEmailErrorMessage(errors.email?.message)
-      : setEmailErrorMessage('');
 
-    errors.userId?.message
-      ? setUserIdErrorMessage(errors.userId?.message)
-      : setUserIdErrorMessage('');
+  useEffect(() => {
+    if (errors.email?.message) {
+      setEmailErrorMessage(errors.email?.message);
+    } else {
+      setEmailErrorMessage('');
+    }
+
+    if (errors.userId?.message) {
+      setUserIdErrorMessage(errors.userId?.message);
+    } else {
+      setUserIdErrorMessage('');
+    }
   }, [errors.email, errors.userId]);
   return (
     <Card className="w-96">
