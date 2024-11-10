@@ -12,6 +12,7 @@ pub struct User {
     pub email: String,
     pub icon_url: Option<String>,
     pub password: String,
+    pub salt: String,
     pub self_introduction: Option<String>,
     pub user_id: String,
     pub username: String,
@@ -33,6 +34,17 @@ pub struct LoginUser {
 pub struct UserRegister {
     pub email: String,
     pub password: String,
+    pub user_id: String,
+    pub username: String,
+}
+
+#[derive(Insertable, Serialize, Deserialize)]
+#[diesel(table_name = crate::schema::users)]
+#[diesel(check_for_backend(diesel::pg::Pg))]
+pub struct CreateUser {
+    pub email: String,
+    pub password: String,
+    pub salt: String,
     pub user_id: String,
     pub username: String,
 }

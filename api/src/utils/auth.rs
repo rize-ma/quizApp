@@ -19,11 +19,17 @@ pub fn find_user(
     Ok(user)
 }
 
-pub fn hash_password(password: &[u8]) -> Result<String, AuthError> {
-    let salt = SaltString::generate(&mut OsRng);
+pub fn hash_password(password: &[u8], salt: Option<String>) -> Result<(String, String), AuthError> {
+    let salt = match salt {
+        Some(salt) => SaltString::from_b64(&salt).map_err(|_| AuthError::PasswordHashingError)?,
+        None => SaltString::generate(&mut OsRng),
+    };
+
     let argon2 = Argon2::default();
-    match argon2.hash_password(password, &salt) {
-        Ok(hashed_password) => Ok(hashed_password.to_string()),
-        Err(_) => return Err(AuthError::PasswordHashingError),
-    }
+    let hashed_password = argon2
+        .hash_password(password, &salt)
+        .map_err(|_| AuthError::PasswordHashingError)?
+        .to_string();
+
+    Ok((hashed_password, salt.to_string()))
 }

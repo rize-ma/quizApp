@@ -5,7 +5,6 @@ use actix_cors::Cors;
 use actix_web::middleware::Logger;
 use actix_web::{http, middleware, web, App, HttpServer};
 use quiz::middleware::authentication_token;
-use quiz::routes::auth::login;
 use quiz::routes::quiz_results::quiz_result_route;
 use quiz::routes::user::user_route;
 
@@ -28,14 +27,13 @@ async fn main() -> std::io::Result<()> {
             )
             .wrap(Logger::default())
             .wrap(middleware::NormalizePath::default())
-            .service(login)
             .service(auth_route())
-            .service(user_route())
             .service(
                 web::scope("/api")
                     .wrap(authentication_token::Authentication)
                     .service(quiz_route())
-                    .service(quiz_result_route()),
+                    .service(quiz_result_route())
+                    .service(user_route()),
             )
             .app_data(web::Data::new(get_pool().clone()))
     })
