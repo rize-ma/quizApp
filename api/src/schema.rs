@@ -36,6 +36,8 @@ diesel::table! {
         icon_url -> Nullable<Varchar>,
         #[max_length = 255]
         password -> Varchar,
+        #[max_length = 255]
+        salt -> Varchar,
         self_introduction -> Nullable<Text>,
         #[max_length = 255]
         user_id -> Varchar,

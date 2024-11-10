@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useState } from 'react';
 import { Button } from '../ui/button/button';
 import { Input } from '../ui/input/input';
 import {
@@ -13,15 +13,12 @@ import { Label } from '../ui/label/label';
 import { Alert, AlertTitle } from '../ui/alert/alert';
 import { AlertCircle } from 'lucide-react';
 import { clsx } from 'clsx';
-import axios from 'axios';
+import { LoginInput } from '../../type/auth';
+import { login } from '../../api/auth';
+import { isAxiosError } from 'axios';
 
 interface LoginProps {
   onChangeRegister: () => void;
-}
-
-interface LoginInput {
-  email: string;
-  password: string;
 }
 
 const Login: FC<LoginProps> = ({ onChangeRegister }) => {
@@ -30,12 +27,25 @@ const Login: FC<LoginProps> = ({ onChangeRegister }) => {
     formState: { errors },
     handleSubmit,
   } = useForm<LoginInput>();
-  const onSubmit = (data: LoginInput) => {
-    axios({
-      method: 'post',
-      url: 'http://127.0.0.1:8080/auth/login',
-      data: data,
-    });
+  const [loginErrorMessage, setLoginErrorMessage] = useState('');
+  const onSubmit = async (input: LoginInput) => {
+    try {
+      await login(input);
+    } catch (err) {
+      if (!isAxiosError(err)) {
+        return;
+      }
+      if (
+        err.response?.data?.message === 'Email address does not exist' ||
+        err.response?.data?.message === 'Password is incorrect'
+      ) {
+        setLoginErrorMessage('メールアドレスまたはパスワードが間違っています');
+        return;
+      }
+      setLoginErrorMessage(
+        'サーバーで問題が発生しました。時間をおいて再度お試しください。',
+      );
+    }
   };
   return (
     <Card className="w-96">
@@ -46,10 +56,17 @@ const Login: FC<LoginProps> = ({ onChangeRegister }) => {
         <form onSubmit={handleSubmit(onSubmit)}>
           <CardContent>
             <div className="flex flex-col">
-              <div className="w-full flex justify-center">
+              <div className="w-full flex flex-col justify-center">
                 <Button variant="link" onClick={onChangeRegister}>
                   ユーザー登録する
                 </Button>
+                <Alert
+                  className={clsx('mt-1', { hidden: !loginErrorMessage })}
+                  variant="error"
+                >
+                  <AlertCircle className="h-4 w-4" />
+                  <AlertTitle>{`${loginErrorMessage}`}</AlertTitle>
+                </Alert>
               </div>
               <div className="mt-12">
                 <Label>メールアドレス</Label>

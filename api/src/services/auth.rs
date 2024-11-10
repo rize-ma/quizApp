@@ -1,7 +1,7 @@
 use crate::{
     config::db_connection::DbPool,
     errors::auth::AuthError,
-    models::user::{LoginUser, User, UserRegister},
+    models::user::{CreateUser, LoginUser, User, UserRegister},
     schema::users::dsl::{email, user_id, users},
     utils::auth::{find_user, hash_password},
 };
@@ -18,7 +18,8 @@ impl AuthService {
         let user = find_user(&mut conn, Box::new(email.eq(form_data.email.clone())))?
             .ok_or(AuthError::EmailNotFound)?;
 
-        let hashed_password = hash_password(&form_data.password.as_bytes())?;
+        let (hashed_password, _salt) =
+            hash_password(&form_data.password.as_bytes(), Some(user.salt.clone()))?;
         if user.password != hashed_password {
             return Err(AuthError::IncorrectPassword);
         };
@@ -38,10 +39,11 @@ impl AuthService {
             return Err(AuthError::UserIdAlreadyRegistered);
         }
 
-        let hashed_password = hash_password(&form_data.password.as_bytes())?;
-        let new_user = UserRegister {
+        let (hashed_password, salt) = hash_password(&form_data.password.as_bytes(), None)?;
+        let new_user = CreateUser {
             email: form_data.email,
             password: hashed_password,
+            salt,
             user_id: form_data.user_id,
             username: form_data.username,
         };

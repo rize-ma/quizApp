@@ -11,19 +11,14 @@ import { Button } from '../ui/button/button';
 import { AlertCircle, ChevronsLeft, ChevronsRight } from 'lucide-react';
 import { clsx } from 'clsx';
 import { useForm } from 'react-hook-form';
-import axios from 'axios';
+import { isAxiosError } from 'axios';
 import { Label } from '../ui/label/label';
 import { Alert, AlertTitle } from '../ui/alert/alert';
+import { UserRegisterInput } from '../../type/auth';
+import { userRegister } from '../../api/auth';
 
 interface UserRegisterProps {
   onChangeLogin: () => void;
-}
-
-interface UserRegisterInput {
-  email: string;
-  password: string;
-  userId: string;
-  username: string;
 }
 
 const UserRegister: FC<UserRegisterProps> = ({ onChangeLogin }) => {
@@ -45,33 +40,25 @@ const UserRegister: FC<UserRegisterProps> = ({ onChangeLogin }) => {
   const onClickReturn = () => {
     setStep(1);
   };
-  const onSubmit = async (data: UserRegisterInput) => {
-    axios({
-      method: 'post',
-      url: 'http://127.0.0.1:8080/auth/user-register',
-      data: {
-        email: data.email,
-        password: data.password,
-        user_id: data.userId,
-        username: data.username,
-      },
-    })
-      .then((res) => {
-        const token = res.data.token.Ok;
-        localStorage.setItem('authToken', token);
-      })
-      .catch((err) => {
-        if (err.response.data.message === 'Registered email address') {
-          setEmailErrorMessage('使用済みのメールアドレスです');
-        } else {
-          setEmailErrorMessage('');
-        }
-        if (err.response.data.message === 'Registered userId') {
-          setUserIdErrorMessage('使用済みのユーザーIDです');
-        } else {
-          setUserIdErrorMessage('');
-        }
-      });
+  const onSubmit = async (input: UserRegisterInput) => {
+    try {
+      await userRegister(input);
+    } catch (err) {
+      if (!isAxiosError(err)) {
+        return;
+      }
+      if (err.response?.data?.message === 'Registered email address') {
+        setEmailErrorMessage('使用済みのメールアドレスです');
+      } else {
+        setEmailErrorMessage('');
+      }
+
+      if (err.response?.data?.message === 'Registered userId') {
+        setUserIdErrorMessage('使用済みのユーザーIDです');
+      } else {
+        setUserIdErrorMessage('');
+      }
+    }
   };
 
   useEffect(() => {
