@@ -16,6 +16,7 @@ import { clsx } from 'clsx';
 import { LoginInput } from '../../type/auth';
 import { login } from '../../api/auth';
 import { isAxiosError } from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 interface LoginProps {
   onChangeRegister: () => void;
@@ -27,10 +28,12 @@ const Login: FC<LoginProps> = ({ onChangeRegister }) => {
     formState: { errors },
     handleSubmit,
   } = useForm<LoginInput>();
+  const navigate = useNavigate();
   const [loginErrorMessage, setLoginErrorMessage] = useState('');
   const onSubmit = async (input: LoginInput) => {
     try {
       await login(input);
+      navigate('/quiz/start');
     } catch (err) {
       if (!isAxiosError(err)) {
         return;

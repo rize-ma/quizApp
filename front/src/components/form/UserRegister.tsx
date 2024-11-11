@@ -16,6 +16,7 @@ import { Label } from '../ui/label/label';
 import { Alert, AlertTitle } from '../ui/alert/alert';
 import { UserRegisterInput } from '../../type/auth';
 import { userRegister } from '../../api/auth';
+import { useNavigate } from 'react-router-dom';
 
 interface UserRegisterProps {
   onChangeLogin: () => void;
@@ -28,6 +29,7 @@ const UserRegister: FC<UserRegisterProps> = ({ onChangeLogin }) => {
     handleSubmit,
     trigger,
   } = useForm<UserRegisterInput>();
+  const navigate = useNavigate();
   const [step, setStep] = useState(1);
   const [emailErrorMessage, setEmailErrorMessage] = useState('');
   const [userIdErrorMessage, setUserIdErrorMessage] = useState('');
@@ -43,6 +45,7 @@ const UserRegister: FC<UserRegisterProps> = ({ onChangeLogin }) => {
   const onSubmit = async (input: UserRegisterInput) => {
     try {
       await userRegister(input);
+      navigate('/quiz/start');
     } catch (err) {
       if (!isAxiosError(err)) {
         return;
