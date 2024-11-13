@@ -1,10 +1,10 @@
 import { useState } from 'react';
-import UserRegister from '../components/form/UserRegister';
-import Login from '@/components/form/Login';
+import { UserRegister } from '../components/form/UserRegister';
+import { Login } from '@/components/form/Login';
 import { clsx } from 'clsx';
 import { Helmet } from 'react-helmet-async';
 
-const Auth = () => {
+export const Auth = () => {
   type FormType = 'login' | 'register';
   const [activeForm, setActiveForm] = useState<FormType>('login');
   const onChangeRegister = () => {
@@ -35,5 +35,3 @@ const Auth = () => {
     </>
   );
 };
-
-export default Auth;

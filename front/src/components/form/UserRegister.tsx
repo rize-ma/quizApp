@@ -22,7 +22,7 @@ interface UserRegisterProps {
   onChangeLogin: () => void;
 }
 
-const UserRegister: FC<UserRegisterProps> = ({ onChangeLogin }) => {
+export const UserRegister: FC<UserRegisterProps> = ({ onChangeLogin }) => {
   const {
     register,
     formState: { errors },
@@ -200,5 +200,3 @@ const UserRegister: FC<UserRegisterProps> = ({ onChangeLogin }) => {
     </Card>
   );
 };
-
-export default UserRegister;

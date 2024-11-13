@@ -2,9 +2,13 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import './index.css';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import Auth from './page/Auth';
+import { Auth } from './page/Auth';
 import { HelmetProvider } from 'react-helmet-async';
 import PrivateRoute from './PrivateRoute';
+import { Mypage } from './page/Mypage';
+import { QuizStart } from './page/QuizStart';
+import { QuizEdit } from './page/QuizEdit';
+import { QuizPost } from './page/QuizPost';
 const router = createBrowserRouter([
   {
     path: '/auth',
@@ -15,8 +19,20 @@ const router = createBrowserRouter([
     element: <PrivateRoute />,
     children: [
       {
-        path: 'start',
-        element: <div>hoge</div>,
+        path: './mypage',
+        element: <Mypage />,
+      },
+      {
+        path: './start',
+        element: <QuizStart />,
+      },
+      {
+        path: './post',
+        element: <QuizPost />,
+      },
+      {
+        path: './edit',
+        element: <QuizEdit />,
       },
     ],
   },
