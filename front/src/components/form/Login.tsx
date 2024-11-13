@@ -22,7 +22,7 @@ interface LoginProps {
   onChangeRegister: () => void;
 }
 
-const Login: FC<LoginProps> = ({ onChangeRegister }) => {
+export const Login: FC<LoginProps> = ({ onChangeRegister }) => {
   const {
     register,
     formState: { errors },
@@ -121,5 +121,3 @@ const Login: FC<LoginProps> = ({ onChangeRegister }) => {
     </Card>
   );
 };
-
-export default Login;
