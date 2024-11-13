@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { UserRegister } from '../components/form/UserRegister';
-import { Login } from '@/components/form/Login';
+import { UserRegister } from '../components/form/auth/UserRegister';
+import { Login } from '@/components/form/auth/Login';
 import { clsx } from 'clsx';
 import { Helmet } from 'react-helmet-async';
 

@@ -19,19 +19,19 @@ const router = createBrowserRouter([
     element: <PrivateRoute />,
     children: [
       {
-        path: './mypage',
+        path: 'mypage',
         element: <Mypage />,
       },
       {
-        path: './start',
+        path: 'start',
         element: <QuizStart />,
       },
       {
-        path: './post',
+        path: 'post',
         element: <QuizPost />,
       },
       {
-        path: './edit',
+        path: 'edit',
         element: <QuizEdit />,
       },
     ],

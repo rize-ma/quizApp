@@ -5,17 +5,17 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from '../ui/card/card';
-import { Input } from '../ui/input/input';
-import { Button } from '../ui/button/button';
+} from '../../ui/card/card';
+import { Input } from '../../ui/input/input';
+import { Button } from '../../ui/button/button';
 import { AlertCircle, ChevronsLeft, ChevronsRight } from 'lucide-react';
 import { clsx } from 'clsx';
 import { useForm } from 'react-hook-form';
 import { isAxiosError } from 'axios';
-import { Label } from '../ui/label/label';
-import { Alert, AlertTitle } from '../ui/alert/alert';
-import { UserRegisterInput } from '../../type/auth';
-import { userRegister } from '../../api/auth';
+import { Label } from '../../ui/label/label';
+import { Alert, AlertTitle } from '../../ui/alert/alert';
+import { UserRegisterInput } from '../../../type/auth';
+import { userRegister } from '../../../api/auth';
 import { useNavigate } from 'react-router-dom';
 
 interface UserRegisterProps {
