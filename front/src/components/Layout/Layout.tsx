@@ -10,8 +10,8 @@ export const Layout = ({ children }: LayoutProps) => {
   return (
     <SidebarProvider className="bg-black-opacity-80">
       <AppSidebar />
-      <main>
-        <SidebarTrigger className="bg-zinc-900 text-white hover:bg-white hover:text-black" />
+      <main className="flex text-white w-full">
+        <SidebarTrigger className="mr-5 bg-zinc-900 hover:bg-white hover:text-black" />
         {children}
       </main>
     </SidebarProvider>

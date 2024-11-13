@@ -1,20 +1,20 @@
 import { FC, useState } from 'react';
-import { Button } from '../ui/button/button';
-import { Input } from '../ui/input/input';
+import { Button } from '../../ui/button/button';
+import { Input } from '../../ui/input/input';
 import {
   Card,
   CardContent,
   CardFooter,
   CardHeader,
   CardTitle,
-} from '../ui/card/card';
+} from '../../ui/card/card';
 import { useForm } from 'react-hook-form';
-import { Label } from '../ui/label/label';
-import { Alert, AlertTitle } from '../ui/alert/alert';
+import { Label } from '../../ui/label/label';
+import { Alert, AlertTitle } from '../../ui/alert/alert';
 import { AlertCircle } from 'lucide-react';
 import { clsx } from 'clsx';
-import { LoginInput } from '../../type/auth';
-import { login } from '../../api/auth';
+import { LoginInput } from '../../../type/auth';
+import { login } from '../../../api/auth';
 import { isAxiosError } from 'axios';
 import { useNavigate } from 'react-router-dom';
 
