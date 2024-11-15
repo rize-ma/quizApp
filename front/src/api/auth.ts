@@ -7,22 +7,21 @@ export const userRegister = async ({
   userId,
   username,
 }: UserRegisterInput) => {
-  const res = await api.post('/auth/user-register', {
-    email: email,
-    password: password,
+  const res = await api().post('/auth/user-register', {
+    email,
+    password,
     user_id: userId,
-    username: username,
+    username,
   });
-
-  const token = res.data.token.Ok;
-  localStorage.setItem('authToken', token);
+  localStorage.setItem('userId', res.data.user.id);
+  localStorage.setItem('authToken', res.data.token.Ok);
 };
 
 export const login = async ({ email, password }: LoginInput) => {
-  const res = await api.post('/auth/login', {
-    email: email,
-    password: password,
+  const res = await api().post('/auth/login', {
+    email,
+    password,
   });
-  const token = res.data.token.Ok;
-  localStorage.setItem('authToken', token);
+  localStorage.setItem('userId', res.data.user.id);
+  localStorage.setItem('authToken', res.data.token.Ok);
 };
