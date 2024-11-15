@@ -43,6 +43,9 @@ where
     forward_ready!(service);
 
     fn call(&self, req: ServiceRequest) -> Self::Future {
+        if req.method() == http::Method::OPTIONS {
+            return Box::pin(self.service.call(req));
+        }
         let auth_header = req.headers().get(http::header::AUTHORIZATION);
 
         if auth_header.is_none() {
@@ -50,6 +53,7 @@ where
         }
 
         let auth_token = auth_header.unwrap().to_str().unwrap_or("").to_string();
+        let auth_token = auth_token.strip_prefix("Bearer ").unwrap_or("").to_string();
 
         if auth_token.is_empty() {
             return Box::pin(async move { Err(ErrorUnauthorized("Token is empty")) });
