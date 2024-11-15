@@ -1,7 +1,7 @@
 use crate::{
     config::db_connection::DbPool,
     errors::auth::AuthError,
-    models::user::{CreateUser, LoginUser, User, UserRegister},
+    models::user::{CreateUser, LoginUser, User, UserDTO, UserRegister},
     schema::users::dsl::{email, user_id, users},
     utils::auth::{find_user, hash_password},
 };
@@ -12,7 +12,7 @@ use diesel::prelude::*;
 pub struct AuthService;
 
 impl AuthService {
-    pub fn login(pool: web::Data<DbPool>, form_data: LoginUser) -> Result<User, AuthError> {
+    pub fn login(pool: web::Data<DbPool>, form_data: LoginUser) -> Result<UserDTO, AuthError> {
         let mut conn = pool.get().map_err(|_| AuthError::UnknownError)?;
 
         let user = find_user(&mut conn, Box::new(email.eq(form_data.email.clone())))?
@@ -23,13 +23,13 @@ impl AuthService {
         if user.password != hashed_password {
             return Err(AuthError::IncorrectPassword);
         };
-        Ok(user)
+        Ok(user.to_dto())
     }
 
     pub fn user_register(
         pool: web::Data<DbPool>,
         form_data: UserRegister,
-    ) -> Result<User, AuthError> {
+    ) -> Result<UserDTO, AuthError> {
         let mut conn = pool.get().map_err(|_| AuthError::UnknownError)?;
 
         if find_user(&mut conn, Box::new(email.eq(form_data.email.clone())))?.is_some() {
@@ -52,6 +52,6 @@ impl AuthService {
             .values(&new_user)
             .get_result::<User>(&mut conn)
             .map_err(|_| AuthError::UserRegistrationError)?;
-        Ok(user)
+        Ok(user.to_dto())
     }
 }
