@@ -10,8 +10,11 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from '../ui/sidebar/sidebar';
+import { LogoutAlertDialog } from '../ui/alert-dialog/alert-dialog';
+import { useNavigate } from 'react-router-dom';
 
 export const AppSidebar = () => {
+  const navigate = useNavigate();
   const items = [
     {
       title: 'マイページ',
@@ -35,6 +38,12 @@ export const AppSidebar = () => {
     },
   ];
 
+  const onClickLogout = () => {
+    localStorage.removeItem('userId');
+    localStorage.removeItem('authToken');
+    navigate('/auth');
+  };
+
   return (
     <Sidebar>
       <SidebarHeader className="bg-zinc-900 text-white">
@@ -55,6 +64,11 @@ export const AppSidebar = () => {
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}
+              <SidebarMenuItem>
+                <SidebarMenuButton asChild className="rounded-xl">
+                  <LogoutAlertDialog onClickLogout={onClickLogout} />
+                </SidebarMenuButton>
+              </SidebarMenuItem>
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
