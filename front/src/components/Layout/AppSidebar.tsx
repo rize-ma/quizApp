@@ -1,4 +1,4 @@
-import { Pencil, Play, Plus, User } from 'lucide-react';
+import { List, Play, Plus, User } from 'lucide-react';
 import {
   Sidebar,
   SidebarContent,
@@ -32,9 +32,9 @@ export const AppSidebar = () => {
       icon: <Plus />,
     },
     {
-      title: 'クイズを編集',
+      title: 'クイズ一覧',
       url: './edit',
-      icon: <Pencil />,
+      icon: <List />,
     },
   ];
 
