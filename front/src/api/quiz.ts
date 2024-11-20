@@ -20,3 +20,12 @@ export const quizPost = async ({
     question,
   });
 };
+
+export const getQuizzesByUserId = async () => {
+  const userId = localStorage.getItem('userId');
+  return await api().get('/api/quizzes/', {
+    params: {
+      user_id: userId,
+    },
+  });
+};

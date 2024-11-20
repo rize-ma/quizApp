@@ -33,7 +33,7 @@ export const AppSidebar = () => {
     },
     {
       title: 'クイズ一覧',
-      url: './edit',
+      url: './list',
       icon: <List />,
     },
   ];

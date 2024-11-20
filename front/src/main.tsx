@@ -7,7 +7,7 @@ import { HelmetProvider } from 'react-helmet-async';
 import PrivateRoute from './PrivateRoute';
 import { Mypage } from './page/Mypage';
 import { QuizStart } from './page/QuizStart';
-import { QuizEdit } from './page/QuizEdit';
+import { QuizList } from './page/QuizList';
 import { QuizPost } from './page/QuizPost';
 const router = createBrowserRouter([
   {
@@ -31,8 +31,8 @@ const router = createBrowserRouter([
         element: <QuizPost />,
       },
       {
-        path: 'edit',
-        element: <QuizEdit />,
+        path: 'list',
+        element: <QuizList />,
       },
     ],
   },

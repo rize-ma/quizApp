@@ -2,7 +2,7 @@ use crate::{
     config::db_connection::DbPool,
     errors::quiz::QuizError,
     models::quiz::{NewQuiz, Quiz, UpdateQuiz},
-    schema::quizzes::dsl::{id, quizzes},
+    schema::quizzes::dsl::{created_by, id, quizzes},
 };
 use actix_web::web;
 use diesel::prelude::*;
@@ -12,11 +12,22 @@ use uuid::Uuid;
 pub struct QuizService;
 
 impl QuizService {
-    pub fn get_quiz(pool: web::Data<DbPool>, quiz_id: Uuid) -> Result<Quiz, QuizError> {
+    pub fn find_quiz_by_quiz_id(pool: web::Data<DbPool>, quiz_id: Uuid) -> Result<Quiz, QuizError> {
         let mut conn = pool.get().map_err(|_| QuizError::UnknownError)?;
         quizzes
             .filter(id.eq(quiz_id))
             .first(&mut conn)
+            .map_err(|_| QuizError::QuizRetrievalError)
+    }
+
+    pub fn find_quiz_by_user_id(
+        pool: web::Data<DbPool>,
+        user_id: Uuid,
+    ) -> Result<Vec<Quiz>, QuizError> {
+        let mut conn = pool.get().map_err(|_| QuizError::UnknownError)?;
+        quizzes
+            .filter(created_by.eq(user_id))
+            .load::<Quiz>(&mut conn)
             .map_err(|_| QuizError::QuizRetrievalError)
     }
 
