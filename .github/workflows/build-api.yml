@@ -22,4 +22,5 @@ jobs:
       - name: Install dependencies
         run: |
           cd api
+          cargo update
           cargo build

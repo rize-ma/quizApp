@@ -24,8 +24,17 @@ async fn get_random_quiz(pool: web::Data<DbPool>, count: web::Path<usize>) -> im
 }
 
 #[get("/{quiz_id}")]
-async fn get_quiz(pool: web::Data<DbPool>, quiz_id: web::Path<Uuid>) -> impl Responder {
-    match web::block(move || QuizService::get_quiz(pool, quiz_id.into_inner())).await {
+async fn find_quiz_by_quiz_id(pool: web::Data<DbPool>, quiz_id: web::Path<Uuid>) -> impl Responder {
+    match web::block(move || QuizService::find_quiz_by_quiz_id(pool, quiz_id.into_inner())).await {
+        Ok(Ok(data)) => Ok(HttpResponse::Ok().json(data)),
+        Ok(Err(err)) => Err(err),
+        Err(_) => Err(QuizError::UnknownError),
+    }
+}
+
+#[get("/{user_id}")]
+async fn find_quiz_by_user_id(pool: web::Data<DbPool>, user_id: web::Path<Uuid>) -> impl Responder {
+    match web::block(move || QuizService::find_quiz_by_user_id(pool, user_id.into_inner())).await {
         Ok(Ok(data)) => Ok(HttpResponse::Ok().json(data)),
         Ok(Err(err)) => Err(err),
         Err(_) => Err(QuizError::UnknownError),
@@ -63,7 +72,8 @@ pub fn quiz_route() -> actix_web::Scope {
     web::scope("/quizzes")
         .service(get_all_quiz)
         .service(get_random_quiz)
-        .service(get_quiz)
+        .service(find_quiz_by_quiz_id)
+        .service(find_quiz_by_user_id)
         .service(create_quiz)
         .service(update_quiz)
         .service(delete_quiz)
