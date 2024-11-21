@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react';
+import { type ReactNode } from 'react';
 import { SidebarProvider, SidebarTrigger } from '../ui/sidebar/sidebar';
 import { AppSidebar } from './AppSidebar';
 

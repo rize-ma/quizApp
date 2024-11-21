@@ -14,7 +14,9 @@ export interface DataSource {
   option4: string;
 }
 
-export const createDataSource = async (notification: NotificationInstance) => {
+export const createDataSource = async (
+  notification: NotificationInstance,
+): Promise<DataSource[] | undefined> => {
   try {
     const quizzes: Quiz[] = (await getQuizzesByUserId()).data;
     const dataSource: DataSource[] = quizzes.map(
