@@ -35,7 +35,7 @@ export const createDataSource = async (notification: NotificationInstance) => {
       return;
     }
     notification.open({
-      message: <p className="text-red-600">クイズの投稿に失敗しました</p>,
+      message: <p className="text-red-600">クイズの取得に失敗しました</p>,
       description: (
         <p className="text-red-600">
           時間を開けるか再度ログインし直してお試しください

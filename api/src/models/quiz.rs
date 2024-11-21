@@ -41,7 +41,6 @@ pub struct NewQuiz {
 pub struct UpdateQuiz {
     pub id: Uuid,
     pub correct_option: i32,
-    pub created_by: Uuid,
     pub option1: String,
     pub option2: String,
     pub option3: String,

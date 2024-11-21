@@ -18,22 +18,22 @@ export const AppSidebar = () => {
   const items = [
     {
       title: 'マイページ',
-      url: './mypage',
+      url: '/quiz/mypage',
       icon: <User />,
     },
     {
       title: 'クイズに挑戦',
-      url: './start',
+      url: '/quiz/start',
       icon: <Play />,
     },
     {
       title: 'クイズを投稿',
-      url: './post',
+      url: '/quiz/post',
       icon: <Plus />,
     },
     {
       title: 'クイズ一覧',
-      url: './list',
+      url: '/quiz/list',
       icon: <List />,
     },
   ];

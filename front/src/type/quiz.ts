@@ -1,6 +1,8 @@
+export type Options = 1 | 2 | 3 | 4;
+
 export interface Quiz {
   id: string;
-  correct_option: number;
+  correct_option: Options;
   created_by: string;
   option1: string;
   option2: string;
@@ -11,11 +13,23 @@ export interface Quiz {
   updated_at?: Date;
 }
 
-export type Options = 1 | 2 | 3 | 4;
+export interface GetQuizzesRes {
+  data: Quiz[];
+}
 
 export interface PostInput {
   correctOption: Options;
   createdBy: string;
+  option1: string;
+  option2: string;
+  option3: string;
+  option4: string;
+  question: string;
+}
+
+export interface EditInput {
+  id: string;
+  correctOption: Options;
   option1: string;
   option2: string;
   option3: string;
