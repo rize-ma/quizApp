@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import {
   createColumns,
   createDataSource,
@@ -7,8 +7,13 @@ import {
 import { ConfigProvider, notification, Table } from 'antd';
 import { ColumnsType } from 'antd/es/table';
 import { useWindowWidth } from '../../hook/windowWidth';
+import { SelectionSelectFn } from 'antd/es/table/interface';
 
-export const ListTabel = () => {
+interface ListTabelProps {
+  onSelect: SelectionSelectFn<DataSource>;
+}
+
+export const ListTabel: FC<ListTabelProps> = ({ onSelect }) => {
   const [columns, setColumns] = useState<ColumnsType<DataSource>>([]);
   const [dataSource, setDataSource] = useState<DataSource[]>([]);
   const width = useWindowWidth();
@@ -46,7 +51,7 @@ export const ListTabel = () => {
       >
         <div>
           <Table
-            rowSelection={{ type: 'checkbox' }}
+            rowSelection={{ type: 'checkbox', onSelect }}
             columns={columns}
             dataSource={dataSource}
             pagination={false}

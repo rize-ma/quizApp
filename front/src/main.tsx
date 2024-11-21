@@ -9,6 +9,7 @@ import { Mypage } from './page/Mypage';
 import { QuizStart } from './page/QuizStart';
 import { QuizList } from './page/QuizList';
 import { QuizPost } from './page/QuizPost';
+import { QuizEdit } from './page/QuizEdit';
 const router = createBrowserRouter([
   {
     path: '/auth',
@@ -33,6 +34,10 @@ const router = createBrowserRouter([
       {
         path: 'list',
         element: <QuizList />,
+      },
+      {
+        path: 'edit/:quizId',
+        element: <QuizEdit />,
       },
     ],
   },
