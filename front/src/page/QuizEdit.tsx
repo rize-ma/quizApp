@@ -3,7 +3,7 @@ import { getQuizById } from '../api/quiz';
 import { FC, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { EditInput } from '../type/quiz';
-import { notification } from 'antd';
+import { notification, Spin } from 'antd';
 import { CircleX } from 'lucide-react';
 import { EditForm } from '@/components/form/edit/EditForm';
 
@@ -56,7 +56,7 @@ export const QuizEdit: FC = () => {
     getQuiz();
   }, []);
   if (!defaultQuiz) {
-    return <div>ロード中</div>;
+    return <Spin fullscreen tip="Loading..." size="large" />;
   }
   return (
     <>

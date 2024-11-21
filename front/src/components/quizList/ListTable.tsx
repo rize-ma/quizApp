@@ -4,7 +4,7 @@ import {
   createDataSource,
   DataSource,
 } from '../../utils/tableData';
-import { ConfigProvider, notification, Table } from 'antd';
+import { ConfigProvider, notification, Spin, Table } from 'antd';
 import { ColumnsType } from 'antd/es/table';
 import { useWindowWidth } from '../../hook/windowWidth';
 import { SelectionSelectFn } from 'antd/es/table/interface';
@@ -34,6 +34,9 @@ export const ListTabel: FC<ListTabelProps> = ({ onSelect }) => {
   return (
     <>
       {contextHolder}
+      {dataSource.length === 0 && (
+        <Spin fullscreen tip="Loading..." size="large" />
+      )}
       <ConfigProvider
         theme={{
           components: {
