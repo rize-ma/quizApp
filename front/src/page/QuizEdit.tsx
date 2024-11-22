@@ -6,6 +6,7 @@ import { EditInput } from '../type/quiz';
 import { notification, Spin } from 'antd';
 import { CircleX } from 'lucide-react';
 import { EditForm } from '@/components/form/edit/EditForm';
+import { Helmet } from 'react-helmet-async';
 
 export const QuizEdit: FC = () => {
   const { quizId } = useParams();
@@ -64,6 +65,9 @@ export const QuizEdit: FC = () => {
   return (
     <>
       {contextHolder}
+      <Helmet>
+        <title>クイズ編集</title>
+      </Helmet>
       <EditForm defaultQuiz={defaultQuiz} notification={api} />
     </>
   );
