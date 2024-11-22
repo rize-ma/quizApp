@@ -3,6 +3,7 @@ use crate::models::quiz::UpdateQuiz;
 use crate::services::quiz::QuizService;
 use crate::{config::db_connection::DbPool, models::quiz::NewQuiz};
 use actix_web::{delete, get, post, put, web, HttpResponse, Responder};
+use serde_json::json;
 use uuid::Uuid;
 
 #[get("")]
@@ -59,10 +60,12 @@ async fn update_quiz(pool: web::Data<DbPool>, quiz_data: web::Json<UpdateQuiz>) 
     }
 }
 
-#[delete("/{quiz_id}")]
-async fn delete_quiz(pool: web::Data<DbPool>, quiz_id: web::Path<Uuid>) -> impl Responder {
-    match web::block(move || QuizService::delete_quiz(pool, quiz_id.into_inner())).await {
-        Ok(Ok(data)) => Ok(HttpResponse::Ok().json(data)),
+#[delete("")]
+async fn delete_quizzes(pool: web::Data<DbPool>, quiz_ids: web::Json<Vec<Uuid>>) -> impl Responder {
+    match web::block(move || QuizService::delete_quizzes(pool, quiz_ids.into_inner())).await {
+        Ok(Ok(deleted_count)) => {
+            Ok(HttpResponse::Ok().json(json!({ "deleted_count": deleted_count })))
+        }
         Ok(Err(err)) => Err(err),
         Err(_) => Err(QuizError::UnknownError),
     }
@@ -76,5 +79,5 @@ pub fn quiz_route() -> actix_web::Scope {
         .service(find_quiz_by_user_id)
         .service(create_quiz)
         .service(update_quiz)
-        .service(delete_quiz)
+        .service(delete_quizzes)
 }

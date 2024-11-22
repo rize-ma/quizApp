@@ -82,4 +82,14 @@ impl QuizService {
             .execute(&mut conn)
             .map_err(|_| QuizError::QuizDeletionError)
     }
+
+    pub fn delete_quizzes(
+        pool: web::Data<DbPool>,
+        quiz_ids: Vec<Uuid>,
+    ) -> Result<usize, QuizError> {
+        let mut conn = pool.get().map_err(|_| QuizError::UnknownError)?;
+        diesel::delete(quizzes.filter(id.eq_any(quiz_ids)))
+            .execute(&mut conn)
+            .map_err(|_| QuizError::QuizDeletionError)
+    }
 }

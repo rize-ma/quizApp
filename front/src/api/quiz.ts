@@ -57,3 +57,9 @@ export const editQuiz = async ({
     question,
   });
 };
+
+export const deleteQuiz = async (quizIds: string[]) => {
+  await api().delete('/api/quizzes/', {
+    data: quizIds,
+  });
+};

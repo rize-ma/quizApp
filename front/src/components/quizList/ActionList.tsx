@@ -7,22 +7,33 @@ import {
 } from '../ui/tooltip/tooltip';
 import { FC } from 'react';
 import { Button } from '../ui/button/button';
+import { DataSource } from '../../utils/tableData';
+import { DeleteConfirmDialog } from '../ui/alert-dialog/alert-dialog';
 
 interface ActionListProps {
+  selectedQuizzes: DataSource[];
   onClickEdit: () => void;
+  onClickDelete: () => void;
 }
 
-export const ActionList: FC<ActionListProps> = ({ onClickEdit }) => {
+export const ActionList: FC<ActionListProps> = ({
+  selectedQuizzes,
+  onClickEdit,
+  onClickDelete,
+}) => {
+  const isQuizSelected = Boolean(selectedQuizzes.length);
   return (
     <div className="rounded-md bg-zinc-900 text-white w-full flex items-center px-5 h-12 max-sm:justify-around">
       <div className="mr-10 flex items-center">
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger>
-              <Info size="20" />
+              <Button disabled={!isQuizSelected} variant="ghost">
+                <Info size="20" />
+              </Button>
             </TooltipTrigger>
             <TooltipContent>
-              <p>クイズ詳細</p>
+              <p>クイズ詳細(未実装)</p>
             </TooltipContent>
           </Tooltip>
         </TooltipProvider>
@@ -31,7 +42,11 @@ export const ActionList: FC<ActionListProps> = ({ onClickEdit }) => {
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger>
-              <Button variant="ghost" onClick={onClickEdit}>
+              <Button
+                disabled={!isQuizSelected}
+                variant="ghost"
+                onClick={onClickEdit}
+              >
                 <Pencil size="20" />
               </Button>
             </TooltipTrigger>
@@ -45,7 +60,14 @@ export const ActionList: FC<ActionListProps> = ({ onClickEdit }) => {
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger>
-              <Trash2 size="20" />
+              <DeleteConfirmDialog
+                isQuizSelected={isQuizSelected}
+                onClickDelete={onClickDelete}
+              >
+                <Button disabled={!isQuizSelected} variant="ghost">
+                  <Trash2 size="20" />
+                </Button>
+              </DeleteConfirmDialog>
             </TooltipTrigger>
             <TooltipContent>
               <p>クイズ削除</p>
