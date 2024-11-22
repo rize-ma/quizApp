@@ -1,3 +1,12 @@
+import { Helmet } from 'react-helmet-async';
+
 export const QuizStart = () => {
-  return <div>QuizStart</div>;
+  return (
+    <>
+      <Helmet>
+        <title>クイズに挑戦</title>
+      </Helmet>
+      <div>QuizStart</div>
+    </>
+  );
 };

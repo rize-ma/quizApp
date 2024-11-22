@@ -13,6 +13,7 @@ import { isAxiosError } from 'axios';
 import { Check, CircleX } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 
 export const QuizList = () => {
   const [selectedQuizzes, setSelectedQuizzes] = useState<DataSource[]>([]);
@@ -119,24 +120,29 @@ export const QuizList = () => {
     setLoading(false);
   };
   return (
-    <div className="w-full mr-5 mt-5 lg:mr-5 lg:p-2 md:m-5 md:p-2">
+    <>
       {contextHolder}
-      {isLoading && <Spin fullscreen tip="Loading..." size="large" />}
-      <h1 className="text-2xl">クイズ一覧</h1>
-      <div className="mt-10">
-        <div className="mb-7">
-          <ActionList
-            selectedQuizzes={selectedQuizzes}
-            onClickEdit={onClickEdit}
-            onClickDelete={onClickDelete}
+      <Helmet>
+        <title>クイズ一覧</title>
+      </Helmet>
+      <div className="w-full mr-5 mt-5 lg:mr-5 lg:p-2 md:m-5 md:p-2">
+        {isLoading && <Spin fullscreen tip="Loading..." size="large" />}
+        <h1 className="text-2xl">クイズ一覧</h1>
+        <div className="mt-10">
+          <div className="mb-7">
+            <ActionList
+              selectedQuizzes={selectedQuizzes}
+              onClickEdit={onClickEdit}
+              onClickDelete={onClickDelete}
+            />
+          </div>
+          <ListTabel
+            columns={columns}
+            dataSource={dataSource}
+            setSelectedQuizzes={setSelectedQuizzes}
           />
         </div>
-        <ListTabel
-          columns={columns}
-          dataSource={dataSource}
-          setSelectedQuizzes={setSelectedQuizzes}
-        />
       </div>
-    </div>
+    </>
   );
 };
