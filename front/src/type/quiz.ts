@@ -36,3 +36,7 @@ export interface EditInput {
   option4: string;
   question: string;
 }
+
+export interface DeleteInput {
+  id: string;
+}

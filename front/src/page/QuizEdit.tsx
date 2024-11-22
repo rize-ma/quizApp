@@ -9,9 +9,11 @@ import { EditForm } from '@/components/form/edit/EditForm';
 
 export const QuizEdit: FC = () => {
   const { quizId } = useParams();
+  const [isLoading, setLoading] = useState(false);
   const [defaultQuiz, setDefaultQuiz] = useState<EditInput>();
   const [api, contextHolder] = notification.useNotification();
   useEffect(() => {
+    setLoading(true);
     const getQuiz = async () => {
       if (quizId) {
         try {
@@ -54,8 +56,9 @@ export const QuizEdit: FC = () => {
       }
     };
     getQuiz();
+    setLoading(false);
   }, []);
-  if (!defaultQuiz) {
+  if (isLoading) {
     return <Spin fullscreen tip="Loading..." size="large" />;
   }
   return (
