@@ -81,11 +81,11 @@ export const QuizPlay = () => {
               <span className="font-extrabold">{finishMessage}</span>
             </div>
             <div className="mt-24">
-              <Button className="w-full">
-                <a href="/quiz/start">
+              <a href="/quiz/start">
+                <Button className="w-full">
                   <span>ホームに戻る</span>
-                </a>
-              </Button>
+                </Button>
+              </a>
             </div>
           </div>
         </div>
