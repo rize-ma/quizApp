@@ -38,6 +38,10 @@ export const getQuizById = async (quizId: string): Promise<GetQuizzesRes> => {
   });
 };
 
+export const getQuizzes = async (count: number): Promise<GetQuizzesRes> => {
+  return api().get(`/api/quizzes/${count}`);
+};
+
 export const editQuiz = async ({
   id,
   correctOption,
