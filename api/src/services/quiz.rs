@@ -42,6 +42,7 @@ impl QuizService {
         pool: web::Data<DbPool>,
         count: usize,
     ) -> Result<Vec<Quiz>, QuizError> {
+        println!("hoge");
         let mut conn = pool.get().map_err(|_| QuizError::UnknownError)?;
 
         let all_quizzes = quizzes
@@ -53,6 +54,7 @@ impl QuizService {
             .choose_multiple(&mut rng, count)
             .cloned()
             .collect();
+        println!("{:?}", selected_quizzes);
 
         Ok(selected_quizzes)
     }

@@ -1,5 +1,4 @@
 import { Navigate, Outlet } from 'react-router-dom';
-import { Layout } from './components/layout/Layout';
 
 const PrivateRoute = () => {
   const token = localStorage.getItem('authToken');
@@ -10,9 +9,9 @@ const PrivateRoute = () => {
   }
 
   return (
-    <Layout>
+    <>
       <Outlet />
-    </Layout>
+    </>
   );
 };
 

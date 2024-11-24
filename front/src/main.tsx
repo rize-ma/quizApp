@@ -10,6 +10,8 @@ import { QuizStart } from './page/QuizStart';
 import { QuizList } from './page/QuizList';
 import { QuizPost } from './page/QuizPost';
 import { QuizEdit } from './page/QuizEdit';
+import { QuizPlay } from './page/QuizPlay';
+import { Layout } from './components/layout/Layout';
 const router = createBrowserRouter([
   {
     path: '/auth',
@@ -21,23 +23,47 @@ const router = createBrowserRouter([
     children: [
       {
         path: 'mypage',
-        element: <Mypage />,
+        element: (
+          <Layout>
+            <Mypage />
+          </Layout>
+        ),
       },
       {
         path: 'start',
-        element: <QuizStart />,
+        element: (
+          <Layout>
+            <QuizStart />
+          </Layout>
+        ),
       },
       {
         path: 'post',
-        element: <QuizPost />,
+        element: (
+          <Layout>
+            <QuizPost />
+          </Layout>
+        ),
       },
       {
         path: 'list',
-        element: <QuizList />,
+        element: (
+          <Layout>
+            <QuizList />
+          </Layout>
+        ),
       },
       {
         path: 'edit/:quizId',
-        element: <QuizEdit />,
+        element: (
+          <Layout>
+            <QuizEdit />
+          </Layout>
+        ),
+      },
+      {
+        path: 'play',
+        element: <QuizPlay />,
       },
     ],
   },

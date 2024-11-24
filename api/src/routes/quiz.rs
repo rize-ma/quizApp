@@ -8,6 +8,7 @@ use uuid::Uuid;
 
 #[get("")]
 async fn get_all_quiz(pool: web::Data<DbPool>) -> impl Responder {
+    println!("hoge");
     match web::block(move || QuizService::get_all_quiz(pool)).await {
         Ok(Ok(data)) => Ok(HttpResponse::Ok().json(data)),
         Ok(Err(err)) => Err(err),
@@ -15,8 +16,9 @@ async fn get_all_quiz(pool: web::Data<DbPool>) -> impl Responder {
     }
 }
 
-#[get("/random")]
-async fn get_random_quiz(pool: web::Data<DbPool>, count: web::Path<usize>) -> impl Responder {
+#[get("/{count}")]
+async fn get_quizzes(pool: web::Data<DbPool>, count: web::Path<usize>) -> impl Responder {
+    println!("hoge");
     match web::block(move || QuizService::get_random_quizzes(pool, count.into_inner())).await {
         Ok(Ok(data)) => Ok(HttpResponse::Ok().json(data)),
         Ok(Err(err)) => Err(err),
@@ -74,7 +76,7 @@ async fn delete_quizzes(pool: web::Data<DbPool>, quiz_ids: web::Json<Vec<Uuid>>)
 pub fn quiz_route() -> actix_web::Scope {
     web::scope("/quizzes")
         .service(get_all_quiz)
-        .service(get_random_quiz)
+        .service(get_quizzes)
         .service(find_quiz_by_quiz_id)
         .service(find_quiz_by_user_id)
         .service(create_quiz)
