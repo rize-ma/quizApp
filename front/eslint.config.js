@@ -119,11 +119,12 @@ export default [
     files: ['**/*.test.ts', '**/*.test.tsx'],
     languageOptions: {
       globals: {
-        ...vitestPlugin.environments.globals,
+        test: 'readonly',
+        expect: 'readonly',
+        describe: 'readonly',
+        beforeEach: 'readonly',
+        afterEach: 'readonly',
       },
-    },
-    env: {
-      'vitest/globals': true,
     },
     plugins: {
       vitest: vitestPlugin,
