@@ -122,13 +122,15 @@ export default [
         ...vitestPlugin.environments.globals,
       },
     },
+    env: {
+      'vitest/globals': true,
+    },
     plugins: {
       vitest: vitestPlugin,
     },
     rules: {
       'vitest/no-conditional-in-test': 'error',
       'vitest/valid-expect': 'error',
-      jest: ['error', true],
     },
   },
 ];
