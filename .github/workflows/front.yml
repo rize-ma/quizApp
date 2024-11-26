@@ -1,4 +1,4 @@
-name: Lint Frontend
+name: front
 
 on:
   pull_request:
@@ -6,7 +6,7 @@ on:
       - "front/**"
 
 jobs:
-  lint:
+  lint_and_test:
     runs-on: ubuntu-latest
 
     steps:
@@ -27,3 +27,8 @@ jobs:
         run: |
           cd front
           yarn lint
+
+      - name: Run Tests
+        run: |
+          cd front
+          yarn test

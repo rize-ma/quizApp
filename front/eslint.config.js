@@ -29,7 +29,7 @@ export default [
     languageOptions: {
       parser: typescriptParser,
       parserOptions: {
-        project: './tsconfig.json',
+        project: './tsconfig.eslint.json',
         ecmaVersion: 2020,
         sourceType: 'module',
       },
@@ -117,12 +117,18 @@ export default [
   },
   {
     files: ['**/*.test.ts', '**/*.test.tsx'],
+    languageOptions: {
+      globals: {
+        ...vitestPlugin.environments.globals,
+      },
+    },
     plugins: {
       vitest: vitestPlugin,
     },
     rules: {
       'vitest/no-conditional-in-test': 'error',
       'vitest/valid-expect': 'error',
+      jest: true,
     },
   },
 ];
