@@ -128,7 +128,7 @@ export default [
     rules: {
       'vitest/no-conditional-in-test': 'error',
       'vitest/valid-expect': 'error',
-      jest: true,
+      jest: ['error', true],
     },
   },
 ];
