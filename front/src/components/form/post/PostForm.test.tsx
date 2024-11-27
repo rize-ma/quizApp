@@ -52,12 +52,9 @@ describe(PostForm, () => {
     const submitButton = screen.getByRole('button', { name: /投稿する/i });
     await user.click(submitButton);
 
-    const successMessage =
-      await screen.findByText('クイズの投稿に失敗しました');
+    const successMessage = await screen.findByText('クイズが投稿されました');
 
-    if (successMessage) {
-      expect(successMessage).toBeInTheDocument();
-    }
+    expect(successMessage).toBeInTheDocument();
   });
 
   test('バリデーションエラーがでる', async () => {

@@ -23,12 +23,12 @@ jobs:
           cd front
           yarn install
 
-      - name: Run Tests
-        run: |
-          cd front
-          yarn test
-
       - name: Run Lint
         run: |
           cd front
           yarn lint
+
+      - name: Run Tests
+        run: |
+          cd front
+          yarn test
