@@ -59,7 +59,6 @@ export default [
       ],
       'tailwindcss/no-custom-classname': 'off',
       'prettier/prettier': ['error', { endOfLine: 'auto' }],
-      //'total-functions/no-unsafe-type-assertion': 'error',
       'no-implicit-coercion': 'error',
       '@typescript-eslint/restrict-plus-operands': [
         'error',
@@ -116,7 +115,7 @@ export default [
     },
   },
   {
-    files: ['**/*.test.ts', '**/*.test.tsx'],
+    files: ['**/*.test.ts', '**/*.test.tsx', 'src/test/setup.ts'],
     languageOptions: {
       globals: {
         test: 'readonly',
@@ -124,6 +123,9 @@ export default [
         describe: 'readonly',
         beforeEach: 'readonly',
         afterEach: 'readonly',
+        beforeAll: 'readonly',
+        afterAll: 'readonly',
+        global: 'readonly',
       },
     },
     plugins: {

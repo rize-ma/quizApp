@@ -31,8 +31,7 @@
     "src/**/*.ts",
     "src/**/*.tsx",
     "lib/*.ts",
-    ".storybook/**/*.ts",
-    ".storybook/**/*.tsx",
+    ".storybook/*.ts",
     "vite.config.ts"
   ],
   "references": [{ "path": "./tsconfig.node.json" }]
