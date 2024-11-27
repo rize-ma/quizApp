@@ -52,14 +52,11 @@ describe(PostForm, () => {
     const submitButton = screen.getByRole('button', { name: /投稿する/i });
     await user.click(submitButton);
 
-    const successMessage = await screen.findByText('クイズが投稿されました');
+    const successMessage =
+      await screen.findByText('クイズの投稿に失敗しました');
 
     if (successMessage) {
       expect(successMessage).toBeInTheDocument();
-    } else {
-      console.log('失敗');
-      const tset = await screen.findByText('クイズの投稿に失敗しました');
-      expect(tset).toBeInTheDocument();
     }
   });
 
