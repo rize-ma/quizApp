@@ -1,7 +1,7 @@
 import { USER_ID, POST_QUIZ } from '../../../test/constants';
 import { PostForm } from './PostForm';
 import userEvent from '@testing-library/user-event';
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import { vi } from 'vitest';
 
 describe(PostForm, () => {
@@ -52,7 +52,11 @@ describe(PostForm, () => {
     const submitButton = screen.getByRole('button', { name: /投稿する/i });
     await user.click(submitButton);
 
-    expect(screen.getByText('クイズが投稿されました')).toBeInTheDocument();
+    const successMessage = await waitFor(() =>
+      screen.getByText('クイズが投稿されました'),
+    );
+
+    expect(successMessage).toBeInTheDocument();
   });
 
   test('バリデーションエラーがでる', async () => {
