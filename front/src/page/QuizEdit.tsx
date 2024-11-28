@@ -27,7 +27,7 @@ export const QuizEdit: FC = () => {
             option3,
             option4,
             question,
-          } = res.data[0];
+          } = res.data;
           setDefaultQuiz({
             id,
             correctOption: correct_option,
@@ -59,7 +59,7 @@ export const QuizEdit: FC = () => {
     getQuiz();
     setLoading(false);
   }, []);
-  if (isLoading) {
+  if (isLoading || defaultQuiz === undefined) {
     return <Spin fullscreen tip="Loading..." size="large" />;
   }
   return (

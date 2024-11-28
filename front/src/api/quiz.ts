@@ -1,4 +1,4 @@
-import { EditInput, GetQuizzesRes, PostInput } from '../type/quiz';
+import { EditInput, GetQuizRes, GetQuizzesRes, PostInput } from '../type/quiz';
 import { api } from './axiosInstance';
 
 export const quizPost = async ({
@@ -23,23 +23,17 @@ export const quizPost = async ({
 
 export const getQuizzesByUserId = async (): Promise<GetQuizzesRes> => {
   const userId = localStorage.getItem('userId');
-  return await api().get('/api/quizzes/', {
-    params: {
-      user_id: userId,
-    },
-  });
+  return await api().get(`/api/quizzes/user/${userId}`);
 };
 
-export const getQuizById = async (quizId: string): Promise<GetQuizzesRes> => {
-  return api().get('/api/quizzes/', {
-    params: {
-      quiz_id: quizId,
-    },
-  });
+export const getQuizById = async (quizId: string): Promise<GetQuizRes> => {
+  return api().get(`/api/quizzes/${quizId}`);
 };
 
-export const getQuizzes = async (count: number): Promise<GetQuizzesRes> => {
-  return api().get(`/api/quizzes/${count}`);
+export const getQuizzesRandom = async (
+  count: number,
+): Promise<GetQuizzesRes> => {
+  return api().get(`/api/quizzes/random/${count}`);
 };
 
 export const editQuiz = async ({

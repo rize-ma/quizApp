@@ -16,6 +16,9 @@ export interface Quiz {
 export interface GetQuizzesRes {
   data: Quiz[];
 }
+export interface GetQuizRes {
+  data: Quiz;
+}
 
 export interface PostInput {
   correctOption: Options;

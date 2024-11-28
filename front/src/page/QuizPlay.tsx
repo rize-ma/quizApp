@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/button/button';
-import { getQuizzes } from '../api/quiz';
+import { getQuizzesRandom } from '../api/quiz';
 import { Quiz } from '../type/quiz';
 import { QuizItem } from '@/components/quizPlay/quizItem';
 import { notification } from 'antd';
@@ -27,7 +27,7 @@ export const QuizPlay = () => {
   useEffect(() => {
     const loadQuizzes = async () => {
       try {
-        const res = await getQuizzes(10);
+        const res = await getQuizzesRandom(10);
         setQuizzes(res.data);
       } catch (err) {
         if (!isAxiosError(err)) {
