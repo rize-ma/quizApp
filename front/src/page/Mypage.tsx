@@ -1,3 +1,4 @@
+import { Profile } from '@/components/user/Profile';
 import { Helmet } from 'react-helmet-async';
 
 export const Mypage = () => {
@@ -6,7 +7,9 @@ export const Mypage = () => {
       <Helmet>
         <title>マイページ</title>
       </Helmet>
-      <div>マイページ</div>
+      <div className="w-full flex justify-center">
+        <Profile />
+      </div>
     </>
   );
 };
