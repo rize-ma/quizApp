@@ -8,6 +8,7 @@ use uuid::Uuid;
 
 #[get("")]
 async fn get_all_quiz(pool: web::Data<DbPool>) -> impl Responder {
+    println!("hoge");
     match web::block(move || QuizService::get_all_quiz(pool)).await {
         Ok(Ok(data)) => Ok(HttpResponse::Ok().json(data)),
         Ok(Err(err)) => Err(err),

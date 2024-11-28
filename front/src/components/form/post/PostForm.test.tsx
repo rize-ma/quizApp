@@ -4,7 +4,7 @@ import userEvent from '@testing-library/user-event';
 import { render, screen } from '@testing-library/react';
 import { vi } from 'vitest';
 
-describe(PostForm, () => {
+describe('クイズ投稿フォーム', () => {
   beforeEach(() => {
     localStorage.setItem('userId', USER_ID);
   });
@@ -31,8 +31,8 @@ describe(PostForm, () => {
     const { CORRECT_OPTION, OPTION1, OPTION2, OPTION3, OPTION4, QUESTION } =
       POST_QUIZ;
 
-    const textarea = screen.getByPlaceholderText('問題文を入力してください');
-    await user.type(textarea, QUESTION);
+    const question = screen.getByPlaceholderText('問題文を入力してください');
+    await user.type(question, QUESTION);
 
     const option1 = screen.getByPlaceholderText('選択肢1を入力');
     await user.type(option1, OPTION1);
