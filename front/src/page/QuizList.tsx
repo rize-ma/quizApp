@@ -9,13 +9,12 @@ import { ActionList } from '@/components/quizList/ActionList';
 import { ListTabel } from '@/components/quizList/ListTable';
 import { notification, Spin } from 'antd';
 import { ColumnsType } from 'antd/es/table/interface';
-import { isAxiosError } from 'axios';
 import { Check, CircleX } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 
-export const QuizList = () => {
+export const QuizList: FC = () => {
   const [selectedQuizzes, setSelectedQuizzes] = useState<DataSource[]>([]);
   const [api, contextHolder] = notification.useNotification();
   const navigate = useNavigate();
@@ -102,10 +101,7 @@ export const QuizList = () => {
       });
       setSelectedQuizzes([]);
       fetchDataSource();
-    } catch (err) {
-      if (!isAxiosError(err)) {
-        return;
-      }
+    } catch {
       api.open({
         message: <p className="text-red-600">クイズの削除が失敗しました</p>,
         description: (

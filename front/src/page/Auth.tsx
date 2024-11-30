@@ -1,10 +1,10 @@
-import { useState } from 'react';
+import { FC, useState } from 'react';
 import { UserRegister } from '../components/form/auth/UserRegister';
 import { Login } from '@/components/form/auth/Login';
 import { clsx } from 'clsx';
 import { Helmet } from 'react-helmet-async';
 
-export const Auth = () => {
+export const Auth: FC = () => {
   type FormType = 'login' | 'register';
   const [activeForm, setActiveForm] = useState<FormType>('login');
   const onChangeRegister = () => {

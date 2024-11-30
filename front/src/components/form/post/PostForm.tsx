@@ -7,12 +7,11 @@ import { useForm } from 'react-hook-form';
 import { clsx } from 'clsx';
 import { AlertCircle, Check, CircleX } from 'lucide-react';
 import { Checkbox } from '@/components/ui/checkbox/checkbox';
-import { useState } from 'react';
+import { FC, useState } from 'react';
 import { quizPost } from '../../../api/quiz';
 import { notification } from 'antd';
-import { isAxiosError } from 'axios';
 
-export const PostForm = () => {
+export const PostForm: FC = () => {
   const {
     register,
     formState: { errors },
@@ -44,10 +43,7 @@ export const PostForm = () => {
         icon: <Check size={28} color="#00ff33" />,
         placement: 'top',
       });
-    } catch (err) {
-      if (!isAxiosError(err)) {
-        return;
-      }
+    } catch {
       api.open({
         message: <p className="text-red-600">クイズの投稿に失敗しました</p>,
         description: (

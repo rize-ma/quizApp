@@ -2,10 +2,11 @@ use crate::{
     config::db_connection::DbPool,
     errors::user::UserError,
     models::user::{User, UserDTO},
-    schema::users::dsl::{email, user_id, users},
+    schema::users::dsl::{email, id, user_id, users},
 };
 use actix_web::web;
 use diesel::prelude::*;
+use uuid::Uuid;
 
 pub struct UserService;
 
@@ -15,6 +16,14 @@ impl UserService {
         users
             .load::<User>(&mut conn)
             .map(|user_list| user_list.into_iter().map(|user| user.to_dto()).collect())
+            .map_err(|_| UserError::UnknownError)
+    }
+    pub fn find_user_by_id(pool: web::Data<DbPool>, user_uuid: Uuid) -> Result<UserDTO, UserError> {
+        let mut conn = pool.get().map_err(|_| UserError::DatabaseError)?;
+        users
+            .filter(id.eq(user_uuid))
+            .first::<User>(&mut conn)
+            .map(|user| user.to_dto())
             .map_err(|_| UserError::UnknownError)
     }
     pub fn find_user_by_user_id(
