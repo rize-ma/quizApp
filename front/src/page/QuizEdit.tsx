@@ -1,4 +1,3 @@
-import { isAxiosError } from 'axios';
 import { getQuizById } from '../api/quiz';
 import { FC, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
@@ -37,10 +36,7 @@ export const QuizEdit: FC = () => {
             option4,
             question,
           });
-        } catch (err) {
-          if (!isAxiosError(err)) {
-            return;
-          }
+        } catch {
           api.open({
             message: (
               <p className="text-red-600">編集するクイズが見つかりません</p>

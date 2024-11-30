@@ -9,7 +9,6 @@ import { AlertCircle, Check, CircleX } from 'lucide-react';
 import { Checkbox } from '@/components/ui/checkbox/checkbox';
 import { FC, useState } from 'react';
 import { editQuiz } from '../../../api/quiz';
-import { isAxiosError } from 'axios';
 import { NotificationInstance } from 'antd/es/notification/interface';
 import { useNavigate } from 'react-router-dom';
 
@@ -50,10 +49,7 @@ export const EditForm: FC<EditFormProps> = ({ defaultQuiz, notification }) => {
         placement: 'top',
       });
       navigate('/quiz/list');
-    } catch (err) {
-      if (!isAxiosError(err)) {
-        return;
-      }
+    } catch {
       notification.open({
         message: <p className="text-red-600">クイズの編集が失敗しました</p>,
         description: (

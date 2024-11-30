@@ -3,13 +3,12 @@ import { getQuizzesRandom } from '../api/quiz';
 import { Quiz } from '../type/quiz';
 import { QuizItem } from '@/components/quizPlay/quizItem';
 import { notification } from 'antd';
-import { isAxiosError } from 'axios';
 import { clsx } from 'clsx';
 import { CircleX } from 'lucide-react';
-import { useEffect, useMemo, useState } from 'react';
+import { FC, useEffect, useMemo, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 
-export const QuizPlay = () => {
+export const QuizPlay: FC = () => {
   const [correctCount, setCorrectCount] = useState(0);
   const [currentQuestion, setCurrentQuestion] = useState(1);
   const [quizzes, setQuizzes] = useState<Quiz[]>([]);
@@ -29,10 +28,7 @@ export const QuizPlay = () => {
       try {
         const res = await getQuizzesRandom(10);
         setQuizzes(res.data);
-      } catch (err) {
-        if (!isAxiosError(err)) {
-          return;
-        }
+      } catch {
         api.open({
           message: <p className="text-red-600">クイズの取得に失敗しました</p>,
           icon: <CircleX size={28} color="#ff0000" />,

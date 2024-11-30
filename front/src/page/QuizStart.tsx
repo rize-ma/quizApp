@@ -1,7 +1,8 @@
 import { Button } from '@/components/ui/button/button';
+import { FC } from 'react';
 import { Helmet } from 'react-helmet-async';
 
-export const QuizStart = () => {
+export const QuizStart: FC = () => {
   return (
     <>
       <Helmet>

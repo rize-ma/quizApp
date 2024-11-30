@@ -12,8 +12,9 @@ import {
 } from '../ui/sidebar/sidebar';
 import { LogoutAlertDialog } from '../ui/alert-dialog/alert-dialog';
 import { useNavigate } from 'react-router-dom';
+import { FC } from 'react';
 
-export const AppSidebar = () => {
+export const AppSidebar: FC = () => {
   const navigate = useNavigate();
   const items = [
     {

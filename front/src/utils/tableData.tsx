@@ -1,4 +1,3 @@
-import { isAxiosError } from 'axios';
 import { getQuizzesByUserId } from '../api/quiz';
 import { Quiz } from '../type/quiz';
 import { NotificationInstance } from 'antd/es/notification/interface';
@@ -32,10 +31,7 @@ export const createDataSource = async (
       },
     );
     return dataSource;
-  } catch (err) {
-    if (!isAxiosError(err)) {
-      return;
-    }
+  } catch {
     notification.open({
       message: <p className="text-red-600">クイズの取得に失敗しました</p>,
       description: (

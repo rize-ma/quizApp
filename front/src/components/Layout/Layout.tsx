@@ -1,4 +1,4 @@
-import { type ReactNode } from 'react';
+import { FC, type ReactNode } from 'react';
 import { SidebarProvider, SidebarTrigger } from '../ui/sidebar/sidebar';
 import { AppSidebar } from './AppSidebar';
 
@@ -6,7 +6,7 @@ interface LayoutProps {
   children: ReactNode;
 }
 
-export const Layout = ({ children }: LayoutProps) => {
+export const Layout: FC<LayoutProps> = ({ children }) => {
   return (
     <SidebarProvider className="bg-black-opacity-80">
       <AppSidebar />
