@@ -17,10 +17,7 @@ export const Mypage: FC = () => {
           throw new Error();
         }
         const res = await getUserById(userId);
-        if (!res.data) {
-          throw new Error();
-        }
-        setUser(res.data);
+        setUser(res);
       } catch {
         api.open({
           message: (
@@ -45,7 +42,7 @@ export const Mypage: FC = () => {
         <title>マイページ</title>
       </Helmet>
       <div className="w-full flex justify-center">
-        <Profile user={user} />
+        <Profile user={user} notification={api} />
       </div>
     </>
   );

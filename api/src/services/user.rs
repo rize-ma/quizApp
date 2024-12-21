@@ -1,7 +1,7 @@
 use crate::{
     config::db_connection::DbPool,
     errors::user::UserError,
-    models::user::{User, UserDTO},
+    models::user::{UpdateUser, User, UserDTO},
     schema::users::dsl::{email, id, user_id, users},
 };
 use actix_web::web;
@@ -49,5 +49,17 @@ impl UserService {
             .optional()
             .map(|opt_user: Option<User>| opt_user.map(|user| user.to_dto()))
             .map_err(|_| UserError::UnknownError)
+    }
+    pub fn update_user(
+        pool: web::Data<DbPool>,
+        user: UpdateUser,
+    ) -> Result<Option<UserDTO>, UserError> {
+        let mut conn = pool.get().map_err(|_| UserError::DatabaseError)?;
+        diesel::update(users.find(user.id))
+            .set(&user)
+            .get_result(&mut conn)
+            .optional()
+            .map(|opt_user: Option<User>| opt_user.map(|user| user.to_dto()))
+            .map_err(|_| UserError::UserUpdateError)
     }
 }

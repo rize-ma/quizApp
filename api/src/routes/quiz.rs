@@ -1,7 +1,7 @@
+use crate::config::db_connection::DbPool;
 use crate::errors::quiz::QuizError;
-use crate::models::quiz::UpdateQuiz;
+use crate::models::quiz::{NewQuiz, UpdateQuiz};
 use crate::services::quiz::QuizService;
-use crate::{config::db_connection::DbPool, models::quiz::NewQuiz};
 use actix_web::{delete, get, post, put, web, HttpResponse, Responder};
 use serde_json::json;
 use uuid::Uuid;
@@ -52,8 +52,8 @@ async fn create_quiz(pool: web::Data<DbPool>, quiz_data: web::Json<NewQuiz>) -> 
 }
 
 #[put("")]
-async fn update_quiz(pool: web::Data<DbPool>, quiz_data: web::Json<UpdateQuiz>) -> impl Responder {
-    match web::block(move || QuizService::update_quiz(pool, quiz_data.into_inner())).await {
+async fn update_quiz(pool: web::Data<DbPool>, quiz: web::Json<UpdateQuiz>) -> impl Responder {
+    match web::block(move || QuizService::update_quiz(pool, quiz.into_inner())).await {
         Ok(Ok(data)) => Ok(HttpResponse::Ok().json(data)),
         Ok(Err(err)) => Err(err),
         Err(_) => Err(QuizError::UnknownError),
