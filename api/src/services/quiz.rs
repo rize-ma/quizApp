@@ -63,13 +63,10 @@ impl QuizService {
             .map_err(|_| QuizError::QuizCreationError)
     }
 
-    pub fn update_quiz(
-        pool: web::Data<DbPool>,
-        quiz_update: UpdateQuiz,
-    ) -> Result<Quiz, QuizError> {
+    pub fn update_quiz(pool: web::Data<DbPool>, quiz: UpdateQuiz) -> Result<Quiz, QuizError> {
         let mut conn = pool.get().map_err(|_| QuizError::DatabaseError)?;
-        diesel::update(quizzes.find(quiz_update.id))
-            .set(&quiz_update)
+        diesel::update(quizzes.find(quiz.id))
+            .set(&quiz)
             .get_result(&mut conn)
             .map_err(|_| QuizError::QuizUpdateError)
     }

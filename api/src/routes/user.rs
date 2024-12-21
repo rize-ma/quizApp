@@ -1,7 +1,8 @@
 use crate::config::db_connection::DbPool;
 use crate::errors::user::UserError;
+use crate::models::user::UpdateUser;
 use crate::services::user::UserService;
-use actix_web::{get, web, HttpResponse, Responder};
+use actix_web::{get, put, web, HttpResponse, Responder};
 use uuid::Uuid;
 
 #[get("all")]
@@ -34,9 +35,19 @@ async fn find_user_by_user_id(
     }
 }
 
+#[put("")]
+async fn update_quiz(pool: web::Data<DbPool>, user: web::Json<UpdateUser>) -> impl Responder {
+    match web::block(move || UserService::update_user(pool, user.into_inner())).await {
+        Ok(Ok(data)) => Ok(HttpResponse::Ok().json(data)),
+        Ok(Err(err)) => Err(err),
+        Err(_) => Err(UserError::UnknownError),
+    }
+}
+
 pub fn user_route() -> actix_web::Scope {
     web::scope("/users")
         .service(get_all_user)
         .service(find_user_by_id)
         .service(find_user_by_user_id)
+        .service(update_quiz)
 }

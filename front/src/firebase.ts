@@ -2,26 +2,40 @@
 import { initializeApp } from 'firebase/app';
 import { getAnalytics } from 'firebase/analytics';
 import { getStorage } from 'firebase/storage';
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
+import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const firebaseConfig = {
-  apiKey: 'AIzaSyCuLsCrqXif2xABEFtzVqMEq896yy8A0MA',
-  authDomain:
-    '[quiz-app-f7b98.firebaseapp.com](http://quiz-app-f7b98.firebaseapp.com/)',
-  projectId: 'quiz-app-f7b98',
-  storageBucket:
-    '[quiz-app-f7b98.appspot.com](http://quiz-app-f7b98.appspot.com/)',
-  messagingSenderId: '101785647677',
-  appId: '1:101785647677:web:9c9684ae4cf81c1ac7c854',
-  measurementId: 'G-90LQ1P0MTT',
-};
+const toSnakeUpperCase = (str: string) =>
+  str.replace(/([a-z])([A-Z])/g, '$1_$2').toUpperCase();
+
+const firebaseConfig = Object.fromEntries(
+  [
+    'apiKey',
+    'authDomain',
+    'projectId',
+    'storageBucket',
+    'messagingSenderId',
+    'appId',
+    'measurementId',
+  ].map((key) => [
+    key,
+    import.meta.env[`VITE_FIREBASE_${toSnakeUpperCase(key)}`],
+  ]),
+);
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 const storage = getStorage(app);
 
-export { analytics, storage };
+const auth = getAuth();
+const signIn = async () => {
+  const userCredential = await signInWithEmailAndPassword(
+    auth,
+    import.meta.env.VITE_FIREBASE_AUTH_EMAIL,
+    import.meta.env.VITE_FIREBASE_AUTH_PASSWORD,
+  );
+  const user = userCredential.user;
+  return user;
+};
+
+export { analytics, storage, signIn };
