@@ -3,6 +3,7 @@ import { PostForm } from './PostForm';
 import userEvent from '@testing-library/user-event';
 import { render, screen } from '@testing-library/react';
 import { vi } from 'vitest';
+import { TestLayout } from '../../../test/TestLayout';
 
 describe('クイズ投稿フォーム', () => {
   beforeEach(() => {
@@ -15,7 +16,11 @@ describe('クイズ投稿フォーム', () => {
   });
 
   test('投稿フォームが表示されている', async () => {
-    render(<PostForm />);
+    render(
+      <TestLayout>
+        <PostForm />
+      </TestLayout>,
+    );
 
     expect(screen.getByText('問題文')).toBeInTheDocument();
     expect(screen.getByText('選択肢1')).toBeInTheDocument();
@@ -27,7 +32,11 @@ describe('クイズ投稿フォーム', () => {
 
   test('正常にクイズを投稿できる', async () => {
     const user = userEvent.setup();
-    render(<PostForm />);
+    render(
+      <TestLayout>
+        <PostForm />
+      </TestLayout>,
+    );
     const { CORRECT_OPTION, OPTION1, OPTION2, OPTION3, OPTION4, QUESTION } =
       POST_QUIZ;
 
@@ -59,7 +68,11 @@ describe('クイズ投稿フォーム', () => {
 
   test('バリデーションエラーがでる', async () => {
     const user = userEvent.setup();
-    render(<PostForm />);
+    render(
+      <TestLayout>
+        <PostForm />
+      </TestLayout>,
+    );
 
     const submitButton = screen.getByRole('button', { name: /投稿する/i });
     await user.click(submitButton);

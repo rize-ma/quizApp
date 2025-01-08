@@ -7,17 +7,16 @@ import { useForm } from 'react-hook-form';
 import { clsx } from 'clsx';
 import { AlertCircle, Check, CircleX } from 'lucide-react';
 import { Checkbox } from '@/components/ui/checkbox/checkbox';
-import { FC, useState } from 'react';
+import { FC, useContext, useState } from 'react';
 import { editQuiz } from '../../../api/quiz';
-import { NotificationInstance } from 'antd/es/notification/interface';
 import { useNavigate } from 'react-router-dom';
+import { NotificationContext } from '@/components/layout/Layout';
 
 interface EditFormProps {
   defaultQuiz?: EditInput;
-  notification: NotificationInstance | null;
 }
 
-export const EditForm: FC<EditFormProps> = ({ defaultQuiz, notification }) => {
+export const EditForm: FC<EditFormProps> = ({ defaultQuiz }) => {
   const {
     register,
     formState: { errors },
@@ -29,6 +28,7 @@ export const EditForm: FC<EditFormProps> = ({ defaultQuiz, notification }) => {
   const [checkedOption, setCheckedOption] = useState<Options | undefined>(
     getValues('correctOption'),
   );
+  const notification = useContext(NotificationContext);
   const navigate = useNavigate();
   const onChangeCheckbox = (option: Options) => {
     if (checkedOption === option) {

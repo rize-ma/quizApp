@@ -64,7 +64,7 @@ export const QuizEdit: FC = () => {
       <Helmet>
         <title>クイズ編集</title>
       </Helmet>
-      <EditForm defaultQuiz={defaultQuiz} notification={notification} />
+      <EditForm defaultQuiz={defaultQuiz} />
     </>
   );
 };
