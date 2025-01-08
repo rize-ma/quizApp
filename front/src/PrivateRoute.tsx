@@ -18,11 +18,11 @@ const PrivateRoute = () => {
     return <Navigate to="/auth" replace />;
   }
 
-  return (
-    <>
-      <Outlet />
-    </>
-  );
+  if (location.pathname === '/') {
+    return <Navigate to="/quiz/mypage" replace />;
+  }
+
+  return <Outlet />;
 };
 
 export default PrivateRoute;
