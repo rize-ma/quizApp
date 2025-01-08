@@ -1,4 +1,4 @@
-import { useWindowWidth } from '../hook/windowWidth';
+import { useWindowWidth } from '../hook/useWindowWidth';
 import { deleteQuiz } from '../api/quiz';
 import {
   createColumns,
