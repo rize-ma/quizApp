@@ -10,7 +10,7 @@ import { Checkbox } from '@/components/ui/checkbox/checkbox';
 import { FC, useContext, useState } from 'react';
 import { editQuiz } from '../../../api/quiz';
 import { useNavigate } from 'react-router-dom';
-import { NotificationContext } from '@/components/layout/Layout';
+import { NotificationContext } from '../../../components/layout/Layout';
 
 interface EditFormProps {
   defaultQuiz?: EditInput;
