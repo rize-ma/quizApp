@@ -14,56 +14,65 @@ import { QuizPlay } from './page/QuizPlay';
 import { Layout } from './components/layout/Layout';
 const router = createBrowserRouter([
   {
-    path: '/auth',
-    element: <Auth />,
-  },
-  {
-    path: '/quiz',
-    element: <PrivateRoute />,
+    path: '/',
+    element: (
+      <>
+        <PrivateRoute />
+      </>
+    ),
     children: [
       {
-        path: 'mypage',
-        element: (
-          <Layout>
-            <Mypage />
-          </Layout>
-        ),
+        path: '/auth',
+        element: <Auth />,
       },
       {
-        path: 'start',
-        element: (
-          <Layout>
-            <QuizStart />
-          </Layout>
-        ),
-      },
-      {
-        path: 'post',
-        element: (
-          <Layout>
-            <QuizPost />
-          </Layout>
-        ),
-      },
-      {
-        path: 'list',
-        element: (
-          <Layout>
-            <QuizList />
-          </Layout>
-        ),
-      },
-      {
-        path: 'edit/:quizId',
-        element: (
-          <Layout>
-            <QuizEdit />
-          </Layout>
-        ),
-      },
-      {
-        path: 'play',
-        element: <QuizPlay />,
+        path: 'quiz',
+        children: [
+          {
+            path: 'mypage',
+            element: (
+              <Layout>
+                <Mypage />
+              </Layout>
+            ),
+          },
+          {
+            path: 'start',
+            element: (
+              <Layout>
+                <QuizStart />
+              </Layout>
+            ),
+          },
+          {
+            path: 'post',
+            element: (
+              <Layout>
+                <QuizPost />
+              </Layout>
+            ),
+          },
+          {
+            path: 'list',
+            element: (
+              <Layout>
+                <QuizList />
+              </Layout>
+            ),
+          },
+          {
+            path: 'edit/:quizId',
+            element: (
+              <Layout>
+                <QuizEdit />
+              </Layout>
+            ),
+          },
+          {
+            path: 'play',
+            element: <QuizPlay />,
+          },
+        ],
       },
     ],
   },

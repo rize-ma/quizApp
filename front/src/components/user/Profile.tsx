@@ -11,6 +11,7 @@ import {
 } from '../ui/tooltip/tooltip';
 import { ViewProfile } from './ViewProfile';
 import { EditProfile } from './EditProfile';
+import { CancelEditConfirmDialog } from '../ui/alert-dialog/alert-dialog';
 
 interface ProfileProps {
   user?: User;
@@ -32,9 +33,11 @@ export const Profile: FC<ProfileProps> = ({ user }) => {
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger>
-                  <Button onClick={onClickCancelEdit} variant="ghost">
-                    <PencilOff size={20} />
-                  </Button>
+                  <CancelEditConfirmDialog onClickCancel={onClickCancelEdit}>
+                    <Button variant="ghost">
+                      <PencilOff size={20} />
+                    </Button>
+                  </CancelEditConfirmDialog>
                 </TooltipTrigger>
                 <TooltipContent>
                   <p>編集を中止</p>
