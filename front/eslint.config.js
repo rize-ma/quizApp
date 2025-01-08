@@ -76,6 +76,7 @@ export default [
       'no-console': ['warn', { allow: ['warn', 'error'] }],
       semi: ['error', 'always'],
       'no-plusplus': 'error',
+      'no-undef': 'off',
     },
     settings: {
       react: {
