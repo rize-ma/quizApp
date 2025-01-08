@@ -2,17 +2,17 @@ import { Button } from '@/components/ui/button/button';
 import { getQuizzesRandom } from '../api/quiz';
 import { Quiz } from '../type/quiz';
 import { QuizItem } from '@/components/quizPlay/quizItem';
-import { notification } from 'antd';
 import { clsx } from 'clsx';
 import { CircleX } from 'lucide-react';
-import { FC, useEffect, useMemo, useState } from 'react';
+import { FC, useContext, useEffect, useMemo, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
+import { NotificationContext } from '@/components/layout/Layout';
 
 export const QuizPlay: FC = () => {
   const [correctCount, setCorrectCount] = useState(0);
   const [currentQuestion, setCurrentQuestion] = useState(1);
   const [quizzes, setQuizzes] = useState<Quiz[]>([]);
-  const [api, contextHolder] = notification.useNotification();
+  const notification = useContext(NotificationContext);
   const onClickNext = () => {
     setCurrentQuestion((prev) => prev + 1);
   };
@@ -29,7 +29,7 @@ export const QuizPlay: FC = () => {
         const res = await getQuizzesRandom(10);
         setQuizzes(res.data);
       } catch {
-        api.open({
+        notification?.open({
           message: <p className="text-red-600">クイズの取得に失敗しました</p>,
           icon: <CircleX size={28} color="#ff0000" />,
           placement: 'top',
@@ -43,7 +43,6 @@ export const QuizPlay: FC = () => {
       <Helmet>
         <title>クイズに挑戦中</title>
       </Helmet>
-      {contextHolder}
       <div className="bg-black-opacity-80 w-full h-screen text-white">
         {quizzes.map((quiz, index) => (
           <div

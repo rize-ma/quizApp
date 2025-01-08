@@ -1,14 +1,14 @@
 import { User } from '../type/user';
 import { getUserById } from '../api/user';
 import { Profile } from '@/components/user/Profile';
-import { FC, useEffect, useState } from 'react';
+import { FC, useContext, useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { CircleX } from 'lucide-react';
-import { notification } from 'antd';
+import { NotificationContext } from '@/components/layout/Layout';
 
 export const Mypage: FC = () => {
   const [user, setUser] = useState<User>();
-  const [api, contextHolder] = notification.useNotification();
+  const notification = useContext(NotificationContext);
   useEffect(() => {
     const loadUser = async () => {
       try {
@@ -19,7 +19,7 @@ export const Mypage: FC = () => {
         const res = await getUserById(userId);
         setUser(res);
       } catch {
-        api.open({
+        notification?.open({
           message: (
             <p className="text-red-600">ユーザー情報が取得できませんでした</p>
           ),
@@ -37,12 +37,11 @@ export const Mypage: FC = () => {
   }, []);
   return (
     <>
-      {contextHolder}
       <Helmet>
         <title>マイページ</title>
       </Helmet>
       <div className="w-full flex justify-center">
-        <Profile user={user} notification={api} />
+        <Profile user={user} />
       </div>
     </>
   );

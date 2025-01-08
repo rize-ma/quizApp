@@ -14,7 +14,7 @@ export interface DataSource {
 }
 
 export const createDataSource = async (
-  notification: NotificationInstance,
+  notification: NotificationInstance | null,
 ): Promise<DataSource[] | undefined> => {
   try {
     const quizzes: Quiz[] = (await getQuizzesByUserId()).data;
@@ -32,7 +32,7 @@ export const createDataSource = async (
     );
     return dataSource;
   } catch {
-    notification.open({
+    notification?.open({
       message: <p className="text-red-600">クイズの取得に失敗しました</p>,
       description: (
         <p className="text-red-600">

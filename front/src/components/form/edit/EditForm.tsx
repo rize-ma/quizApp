@@ -14,7 +14,7 @@ import { useNavigate } from 'react-router-dom';
 
 interface EditFormProps {
   defaultQuiz?: EditInput;
-  notification: NotificationInstance;
+  notification: NotificationInstance | null;
 }
 
 export const EditForm: FC<EditFormProps> = ({ defaultQuiz, notification }) => {
@@ -43,14 +43,14 @@ export const EditForm: FC<EditFormProps> = ({ defaultQuiz, notification }) => {
     try {
       await editQuiz(input);
       reset();
-      notification.open({
+      notification?.open({
         message: 'クイズの編集が完了しました',
         icon: <Check size={28} color="#00ff33" />,
         placement: 'top',
       });
       navigate('/quiz/list');
     } catch {
-      notification.open({
+      notification?.open({
         message: <p className="text-red-600">クイズの編集が失敗しました</p>,
         description: (
           <p className="text-red-600">
