@@ -202,7 +202,7 @@ const DeleteConfirmDialog = ({
     <AlertDialog>
       <AlertDialogTrigger
         disabled={!isQuizSelected}
-        className="flex justify-start p-0 w-full rounded-xl"
+        className="flex justify-start p-0 w-full rounded-xl cursor-pointer"
       >
         {children}
       </AlertDialogTrigger>
@@ -226,6 +226,43 @@ const DeleteConfirmDialog = ({
   );
 };
 
+interface CancelEditConfirmDialogProps {
+  onClickCancel: () => void;
+  children: React.ReactNode;
+}
+
+const CancelEditConfirmDialog = ({
+  onClickCancel,
+  children,
+}: CancelEditConfirmDialogProps) => {
+  return (
+    <AlertDialog>
+      <AlertDialogTrigger className="flex justify-start p-0 w-full rounded-xl cursor-pointer">
+        {children}
+      </AlertDialogTrigger>
+      <AlertDialogContent className="bg-black-opacity-80 text-white">
+        <AlertDialogHeader>
+          <AlertDialogTitle>本当に編集を中断しますか？</AlertDialogTitle>
+        </AlertDialogHeader>
+        <AlertDialogDescription>
+          行った変更は反映されません
+        </AlertDialogDescription>
+        <AlertDialogFooter className="mt-5">
+          <AlertDialogCancel className="sm:mr-5 mt-5 hover:bg-white hover:text-black">
+            戻る
+          </AlertDialogCancel>
+          <AlertDialogAction
+            className="mt-5 bg-sky-400 hover:bg-sky-400/75"
+            onClick={onClickCancel}
+          >
+            中断
+          </AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
+  );
+};
+
 export {
   AlertDialog,
   AlertDialogPortal,
@@ -240,4 +277,5 @@ export {
   AlertDialogCancel,
   LogoutAlertDialog,
   DeleteConfirmDialog,
+  CancelEditConfirmDialog,
 };
