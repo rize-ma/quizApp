@@ -9,6 +9,11 @@ export default defineConfig({
   css: {
     postcss: './postcss.config.js',
   },
+  server: {
+    fs: {
+      cachedChecks: false,
+    },
+  },
   test: {
     globals: true,
     environment: 'jsdom',

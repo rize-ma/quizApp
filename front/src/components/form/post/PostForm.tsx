@@ -9,7 +9,7 @@ import { AlertCircle, Check, CircleX } from 'lucide-react';
 import { Checkbox } from '@/components/ui/checkbox/checkbox';
 import { FC, useContext, useState } from 'react';
 import { quizPost } from '../../../api/quiz';
-import { NotificationContext } from '../../../components/layout/Layout';
+import { NotificationContext } from '@/components/layout/Layout';
 
 export const PostForm: FC = () => {
   const {
