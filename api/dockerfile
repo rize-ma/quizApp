@@ -1,13 +1,14 @@
 FROM rust:1.84 as builder
 
 RUN apt-get update && apt-get install -y \
-    libpq-dev musl-tools && \
+    build-essential \
+    libpq-dev \
+    musl-tools && \
     rustup target add x86_64-unknown-linux-musl
 
 WORKDIR /app
 
 COPY Cargo.toml Cargo.lock ./
-
 RUN cargo fetch
 
 COPY . .
@@ -15,6 +16,7 @@ COPY . .
 RUN cargo build --release --target=x86_64-unknown-linux-musl
 
 FROM alpine:latest
+
 RUN apk add --no-cache libpq
 
 WORKDIR /app
