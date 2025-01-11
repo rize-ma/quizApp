@@ -7,8 +7,8 @@ use uuid::Uuid;
 #[derive(Queryable, Identifiable, Associations, Serialize, Deserialize)]
 #[diesel(table_name = crate::schema::quiz_results)]
 #[diesel(check_for_backend(diesel::pg::Pg))]
-#[belongs_to(User, foreign_key = "user_id")]
-#[belongs_to(Quiz, foreign_key = "quiz_id")]
+#[diesel(belongs_to(User, foreign_key = user_id))]
+#[diesel(belongs_to(Quiz, foreign_key = quiz_id))]
 pub struct QuizResult {
     pub id: Uuid,
     pub answered_at: Option<NaiveDateTime>,

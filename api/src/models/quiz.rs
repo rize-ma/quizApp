@@ -7,7 +7,7 @@ use uuid::Uuid;
 #[derive(Debug, Queryable, Identifiable, Associations, Serialize, Deserialize, Clone)]
 #[diesel(table_name = crate::schema::quizzes)]
 #[diesel(check_for_backend(diesel::pg::Pg))]
-#[belongs_to(User, foreign_key = "created_by")]
+#[diesel(belongs_to(User, foreign_key = created_by))]
 pub struct Quiz {
     pub id: Uuid,
     pub correct_option: i32,
