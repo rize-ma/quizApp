@@ -1,32 +1,25 @@
 FROM rust:1.84 as builder
 
-WORKDIR /app
-
-COPY Cargo.toml Cargo.lock ./
-RUN cargo fetch
-
-COPY . .
-
-# ライブラリをインストールする前に、Rustプロジェクトをビルドすることで、
-# Cargo.metadata.json ファイルが生成され、依存関係が正確に解決されます。
-RUN cargo build --release --target=x86_64-unknown-linux-musl
-
-# ライブラリをインストール
+# 必要なツールとターゲットをインストール
 RUN apt-get update && apt-get install -y \
     build-essential \
     musl-tools \
     libpq-dev && \
     rustup target add x86_64-unknown-linux-musl
 
-# 再度ビルド
-RUN cargo build --release --target=x86_64-unknown-linux-musl
-
-FROM alpine:latest
-
-RUN apk add --no-cache libpq
-
 WORKDIR /app
 
-COPY --from=builder /app/target/x86_64-unknown-linux-musl/release/quiz /app/
+# Cargoファイルをコピーして依存関係をフェッチ
+COPY Cargo.toml Cargo.lock ./
+RUN cargo fetch
 
+# アプリケーションをビルド
+COPY . .
+RUN cargo build --release --target=x86_64-unknown-linux-musl
+
+# 軽量なAlpineイメージにコピー
+FROM alpine:latest
+RUN apk add --no-cache libpq
+WORKDIR /app
+COPY --from=builder /app/target/x86_64-unknown-linux-musl/release/quiz /app/
 CMD ["./quiz"]
