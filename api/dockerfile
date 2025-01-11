@@ -1,25 +1,25 @@
 FROM rust:1.84 as builder
 
+# 必要なツールとターゲットをインストール
 RUN apt-get update && apt-get install -y \
     build-essential \
+    musl-tools \
     libpq-dev && \
-    rustup target add x86_64-unknown-linux-gnu
+    rustup target add x86_64-unknown-linux-musl
 
 WORKDIR /app
 
+# Cargoファイルをコピーして依存関係をフェッチ
 COPY Cargo.toml Cargo.lock ./
 RUN cargo fetch
 
+# アプリケーションをビルド
 COPY . .
-
 RUN cargo build --release --target=x86_64-unknown-linux-musl
 
+# 軽量なAlpineイメージにコピー
 FROM alpine:latest
-
 RUN apk add --no-cache libpq
-
 WORKDIR /app
-
 COPY --from=builder /app/target/x86_64-unknown-linux-musl/release/quiz /app/
-
 CMD ["./quiz"]
