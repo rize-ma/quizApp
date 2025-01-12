@@ -6,6 +6,7 @@ import tsconfingPaths from 'vite-tsconfig-paths';
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react(), tsconfingPaths()],
+  base: '/quizApp/',
   css: {
     postcss: './postcss.config.js',
   },
