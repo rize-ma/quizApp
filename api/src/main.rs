@@ -4,17 +4,19 @@ use ::quiz::routes::quiz::quiz_route;
 use actix_cors::Cors;
 use actix_web::middleware::Logger;
 use actix_web::{http, middleware, web, App, HttpServer};
+use quiz::config::env::get_cors_origin;
 use quiz::middleware::authentication_token;
 use quiz::routes::quiz_results::quiz_result_route;
 use quiz::routes::user::user_route;
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
+    let cors_origin = get_cors_origin();
     HttpServer::new(move || {
         App::new()
             .wrap(
                 Cors::default()
-                    .allowed_origin("http://localhost:5173")
+                    .allowed_origin(cors_origin.as_str())
                     .allowed_methods(vec!["GET", "POST", "PUT", "DELETE", "OPTIONS"])
                     .allowed_headers(vec![
                         http::header::AUTHORIZATION,
