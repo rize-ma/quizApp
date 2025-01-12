@@ -11,15 +11,13 @@ import {
 } from '../ui/tooltip/tooltip';
 import { ViewProfile } from './ViewProfile';
 import { EditProfile } from './EditProfile';
-import { NotificationInstance } from 'antd/es/notification/interface';
 import { CancelEditConfirmDialog } from '../ui/alert-dialog/alert-dialog';
 
 interface ProfileProps {
   user?: User;
-  notification: NotificationInstance;
 }
 
-export const Profile: FC<ProfileProps> = ({ user, notification }) => {
+export const Profile: FC<ProfileProps> = ({ user }) => {
   const [isEdit, setIsEdit] = useState(false);
   const onClickEdit = () => {
     setIsEdit(true);
@@ -67,11 +65,7 @@ export const Profile: FC<ProfileProps> = ({ user, notification }) => {
         </div>
         <div className="w-full">
           {isEdit && user ? (
-            <EditProfile
-              user={user}
-              setIsEdit={setIsEdit}
-              notification={notification}
-            />
+            <EditProfile user={user} setIsEdit={setIsEdit} />
           ) : (
             <ViewProfile user={user} />
           )}

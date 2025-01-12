@@ -1,4 +1,4 @@
-import { useWindowWidth } from '../hook/windowWidth';
+import { useWindowWidth } from '../hook/useWindowWidth';
 import { deleteQuiz } from '../api/quiz';
 import {
   createColumns,
@@ -7,23 +7,24 @@ import {
 } from '../utils/tableData';
 import { ActionList } from '@/components/quizList/ActionList';
 import { ListTabel } from '@/components/quizList/ListTable';
-import { notification, Spin } from 'antd';
+import { Spin } from 'antd';
 import { ColumnsType } from 'antd/es/table/interface';
 import { Check, CircleX } from 'lucide-react';
-import { FC, useEffect, useState } from 'react';
+import { FC, useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
+import { NotificationContext } from '@/components/layout/Layout';
 
 export const QuizList: FC = () => {
   const [selectedQuizzes, setSelectedQuizzes] = useState<DataSource[]>([]);
-  const [api, contextHolder] = notification.useNotification();
+  const notification = useContext(NotificationContext);
   const navigate = useNavigate();
   const [isLoading, setLoading] = useState(false);
   const [columns, setColumns] = useState<ColumnsType<DataSource>>([]);
   const [dataSource, setDataSource] = useState<DataSource[]>([]);
   const width = useWindowWidth();
   const fetchDataSource = async () => {
-    const fetchedData = await createDataSource(api);
+    const fetchedData = await createDataSource(notification);
     if (fetchedData) {
       setDataSource(fetchedData);
     }
@@ -39,7 +40,7 @@ export const QuizList: FC = () => {
   const onClickEdit = () => {
     switch (selectedQuizzes.length) {
       case 0:
-        api.open({
+        notification?.open({
           message: <p className="text-red-600">クイズが選択されていません</p>,
           description: (
             <p className="text-red-600">編集したいクイズを選択してください</p>
@@ -52,7 +53,7 @@ export const QuizList: FC = () => {
         navigate(`/quiz/edit/${selectedQuizzes[0].key}`);
         break;
       case 2:
-        api.open({
+        notification?.open({
           message: <p className="text-red-600">クイズが複数選択されています</p>,
           description: (
             <p className="text-red-600">
@@ -64,7 +65,7 @@ export const QuizList: FC = () => {
         });
         break;
       default:
-        api.open({
+        notification?.open({
           message: <p className="text-red-600">不明なエラーが発生しました</p>,
           description: (
             <p className="text-red-600">
@@ -79,7 +80,7 @@ export const QuizList: FC = () => {
   const onClickDelete = async () => {
     setLoading(true);
     if (!selectedQuizzes.length) {
-      api.open({
+      notification?.open({
         message: (
           <p className="text-red-600">削除するクイズが選択されていません</p>
         ),
@@ -94,7 +95,7 @@ export const QuizList: FC = () => {
     const quizIds = selectedQuizzes.map((quiz) => quiz.key);
     try {
       await deleteQuiz(quizIds);
-      api.open({
+      notification?.open({
         message: 'クイズが削除されました',
         icon: <Check size={28} color="#00ff33" />,
         placement: 'top',
@@ -102,7 +103,7 @@ export const QuizList: FC = () => {
       setSelectedQuizzes([]);
       fetchDataSource();
     } catch {
-      api.open({
+      notification?.open({
         message: <p className="text-red-600">クイズの削除が失敗しました</p>,
         description: (
           <p className="text-red-600">
@@ -117,7 +118,6 @@ export const QuizList: FC = () => {
   };
   return (
     <>
-      {contextHolder}
       <Helmet>
         <title>クイズ一覧</title>
       </Helmet>

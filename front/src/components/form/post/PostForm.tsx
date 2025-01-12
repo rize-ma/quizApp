@@ -7,9 +7,9 @@ import { useForm } from 'react-hook-form';
 import { clsx } from 'clsx';
 import { AlertCircle, Check, CircleX } from 'lucide-react';
 import { Checkbox } from '@/components/ui/checkbox/checkbox';
-import { FC, useState } from 'react';
+import { FC, useContext, useState } from 'react';
 import { quizPost } from '../../../api/quiz';
-import { notification } from 'antd';
+import { NotificationContext } from '@/components/layout/Layout';
 
 export const PostForm: FC = () => {
   const {
@@ -33,18 +33,18 @@ export const PostForm: FC = () => {
     setValue('correctOption', option);
     setCheckedOption(option);
   };
-  const [api, contextHolder] = notification.useNotification();
+  const notification = useContext(NotificationContext);
   const onSubmit = async (input: PostInput) => {
     try {
       await quizPost(input);
       reset();
-      api.open({
+      notification?.open({
         message: 'クイズが投稿されました',
         icon: <Check size={28} color="#00ff33" />,
         placement: 'top',
       });
     } catch {
-      api.open({
+      notification?.open({
         message: <p className="text-red-600">クイズの投稿に失敗しました</p>,
         description: (
           <p className="text-red-600">
@@ -58,7 +58,6 @@ export const PostForm: FC = () => {
   };
   return (
     <div className="w-full m-5 p-1 lg:m-10 lg:p-5 md:m-5 md:p-2">
-      {contextHolder}
       <h1 className="text-2xl">クイズを投稿</h1>
       <div className="mt-10">
         <form onSubmit={handleSubmit(onSubmit)}>

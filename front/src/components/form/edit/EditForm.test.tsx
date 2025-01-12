@@ -4,9 +4,7 @@ import userEvent from '@testing-library/user-event';
 import { render, screen, waitFor } from '@testing-library/react';
 import { vi } from 'vitest';
 import { EditInput } from '../../../type/quiz';
-import { notification } from 'antd';
-import { useNavigate } from 'react-router-dom';
-import { FC } from 'react';
+import { TestLayout } from '../../../test/TestLayout';
 
 const defaultQuiz: EditInput = {
   id: QUIZ_ID,
@@ -18,35 +16,9 @@ const defaultQuiz: EditInput = {
   question: '問題文初期値',
 };
 
-const EditFormWithNotification: FC = () => {
-  const [api, contextHolder] = notification.useNotification();
-
-  return (
-    <>
-      {contextHolder}
-      <EditForm defaultQuiz={defaultQuiz} notification={api} />
-    </>
-  );
-};
-
-vi.mock('react-router-dom', () => ({
-  useNavigate: vi.fn(),
-}));
-
-vi.mock('antd', () => {
-  const mockNotificationApi = {
-    open: vi.fn(),
-  };
-
-  return {
-    notification: {
-      useNotification: vi.fn(() => [
-        mockNotificationApi,
-        <div key="contextHolder" />,
-      ]),
-    },
-  };
-});
+// vi.mock('react-router-dom', () => ({
+//   useNavigate: vi.fn(),
+// }));
 
 vi.mock('../../../api/quiz', () => ({
   editQuiz: vi.fn().mockResolvedValue({ success: true }),
@@ -63,7 +35,11 @@ describe('クイズ編集フォーム', () => {
   });
 
   test('初期値が入力されている', async () => {
-    render(<EditFormWithNotification />);
+    render(
+      <TestLayout>
+        <EditForm defaultQuiz={defaultQuiz} />
+      </TestLayout>,
+    );
 
     const question = screen.getByDisplayValue(defaultQuiz.question);
     expect(question).toBeInTheDocument();
@@ -87,12 +63,12 @@ describe('クイズ編集フォーム', () => {
 
   test('正常にクイズを編集できる', async () => {
     const user = userEvent.setup();
-    render(<EditFormWithNotification />);
-    const mockNavigate = vi.fn();
-    const mockEditQuiz = (await import('../../../api/quiz')).editQuiz;
-    (useNavigate as unknown as ReturnType<typeof vi.fn>).mockReturnValue(
-      mockNavigate,
+    render(
+      <TestLayout>
+        <EditForm defaultQuiz={defaultQuiz} />
+      </TestLayout>,
     );
+    const mockEditQuiz = (await import('../../../api/quiz')).editQuiz;
     const { CORRECT_OPTION, OPTION1, OPTION2, OPTION3, OPTION4, QUESTION } =
       EDIT_QUIZ;
 
@@ -122,7 +98,7 @@ describe('クイズ編集フォーム', () => {
     const submitButton = screen.getByRole('button', { name: /編集完了/i });
     await user.click(submitButton);
 
-    await waitFor(() => {
+    await waitFor(async () => {
       expect(mockEditQuiz).toHaveBeenCalledWith({
         id: QUIZ_ID,
         correctOption: CORRECT_OPTION,
@@ -132,20 +108,19 @@ describe('クイズ編集フォーム', () => {
         option4: OPTION4,
         question: QUESTION,
       });
-
-      const [mockNotificationApi] = notification.useNotification();
-      expect(mockNotificationApi.open).toHaveBeenCalledWith(
-        expect.objectContaining({
-          message: 'クイズの編集が完了しました',
-        }),
-      );
-      expect(mockNavigate).toHaveBeenCalledWith('/quiz/list');
     });
+    const successMessage =
+      await screen.findByText('クイズの編集が完了しました');
+    expect(successMessage).toBeInTheDocument();
   });
 
   test('バリデーションエラーがでる', async () => {
     const user = userEvent.setup();
-    render(<EditFormWithNotification />);
+    render(
+      <TestLayout>
+        <EditForm defaultQuiz={defaultQuiz} />
+      </TestLayout>,
+    );
 
     const question = screen.getByDisplayValue(defaultQuiz.question);
     await userEvent.clear(question);

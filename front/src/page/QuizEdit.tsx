@@ -1,17 +1,18 @@
 import { getQuizById } from '../api/quiz';
-import { FC, useEffect, useState } from 'react';
+import { FC, useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { EditInput } from '../type/quiz';
-import { notification, Spin } from 'antd';
+import { Spin } from 'antd';
 import { CircleX } from 'lucide-react';
 import { EditForm } from '@/components/form/edit/EditForm';
 import { Helmet } from 'react-helmet-async';
+import { NotificationContext } from '@/components/layout/Layout';
 
 export const QuizEdit: FC = () => {
   const { quizId } = useParams();
   const [isLoading, setLoading] = useState(false);
   const [defaultQuiz, setDefaultQuiz] = useState<EditInput>();
-  const [api, contextHolder] = notification.useNotification();
+  const notification = useContext(NotificationContext);
   useEffect(() => {
     setLoading(true);
     const getQuiz = async () => {
@@ -37,7 +38,7 @@ export const QuizEdit: FC = () => {
             question,
           });
         } catch {
-          api.open({
+          notification?.open({
             message: (
               <p className="text-red-600">編集するクイズが見つかりません</p>
             ),
@@ -60,11 +61,10 @@ export const QuizEdit: FC = () => {
   }
   return (
     <>
-      {contextHolder}
       <Helmet>
         <title>クイズ編集</title>
       </Helmet>
-      <EditForm defaultQuiz={defaultQuiz} notification={api} />
+      <EditForm defaultQuiz={defaultQuiz} />
     </>
   );
 };

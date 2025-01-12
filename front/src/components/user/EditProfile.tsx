@@ -1,11 +1,10 @@
-import { Dispatch, FC, SetStateAction, useState } from 'react';
+import { Dispatch, FC, SetStateAction, useContext, useState } from 'react';
 import { User, EditUserInput } from '../../type/user';
 import { Image, Spin } from 'antd';
 import { Label } from '../ui/label/label';
 import { Textarea } from '@/components/ui/textarea/textarea';
 import { useForm } from 'react-hook-form';
 import { editUser } from '../../api/user';
-import { NotificationInstance } from 'antd/es/notification/interface';
 import { AlertCircle, Check, CircleX } from 'lucide-react';
 import { Alert, AlertTitle } from '../ui/alert/alert';
 import { clsx } from 'clsx';
@@ -14,19 +13,16 @@ import { Button } from '../ui/button/button';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import { signIn, storage } from '../../firebase';
 import { useDropzone } from 'react-dropzone';
+import { NotificationContext } from '../layout/Layout';
 
 interface EditProfileProps {
   user: User;
-  notification: NotificationInstance;
   setIsEdit: Dispatch<SetStateAction<boolean>>;
 }
 
-export const EditProfile: FC<EditProfileProps> = ({
-  user,
-  notification,
-  setIsEdit,
-}) => {
+export const EditProfile: FC<EditProfileProps> = ({ user, setIsEdit }) => {
   const { id, iconUrl, selfIntroduction, username } = user;
+  const notification = useContext(NotificationContext);
   const {
     register,
     formState: { errors },
@@ -50,7 +46,7 @@ export const EditProfile: FC<EditProfileProps> = ({
     setLoading(true);
     if (!files.length) return;
     if (files.length !== 1) {
-      notification.open({
+      notification?.open({
         message: (
           <p className="text-red-600">ファイルのアップロードに失敗しました</p>
         ),
@@ -74,7 +70,7 @@ export const EditProfile: FC<EditProfileProps> = ({
         const url = await getDownloadURL(storageRef);
         setValue('iconUrl', url);
       } catch {
-        notification.open({
+        notification?.open({
           message: (
             <p className="text-red-600">
               アップロードしたファイルの取得にに失敗しました
@@ -90,7 +86,7 @@ export const EditProfile: FC<EditProfileProps> = ({
         });
       }
     } catch {
-      notification.open({
+      notification?.open({
         message: (
           <p className="text-red-600">ファイルのアップロードに失敗しました</p>
         ),
@@ -116,21 +112,16 @@ export const EditProfile: FC<EditProfileProps> = ({
 
   const onSubmit = async (input: EditUserInput) => {
     try {
-      await editUser({
-        id: user.id,
-        iconUrl: input.iconUrl,
-        selfIntroduction: input.selfIntroduction,
-        username: input.username,
-      });
+      await editUser(input);
       reset();
-      notification.open({
+      notification?.open({
         message: 'プロフィールの編集が完了しました',
         icon: <Check size={28} color="#00ff33" />,
         placement: 'top',
       });
       setIsEdit(false);
     } catch {
-      notification.open({
+      notification?.open({
         message: <p className="text-red-600">クイズの編集が失敗しました</p>,
         description: (
           <p className="text-red-600">
