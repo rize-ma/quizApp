@@ -1,4 +1,4 @@
-import { Navigate, Outlet } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 
 const PrivateRoute = () => {
   const token = localStorage.getItem('authToken');
@@ -21,8 +21,6 @@ const PrivateRoute = () => {
   if (location.pathname === '/') {
     return <Navigate to="/quiz/mypage" replace />;
   }
-
-  return <Outlet />;
 };
 
 export default PrivateRoute;
