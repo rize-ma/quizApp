@@ -1,6 +1,7 @@
-import { createContext, FC, useContext, type ReactNode } from 'react';
+import { createContext, FC, type ReactNode } from 'react';
 import { SidebarProvider, SidebarTrigger } from '../ui/sidebar/sidebar';
 import { AppSidebar } from './AppSidebar';
+import { notification } from 'antd';
 import { NotificationInstance } from 'antd/es/notification/interface';
 
 interface LayoutProps {
@@ -11,9 +12,10 @@ export const NotificationContext = createContext<NotificationInstance | null>(
 );
 
 export const Layout: FC<LayoutProps> = ({ children }) => {
-  const notification = useContext(NotificationContext);
+  const [api, contextHolder] = notification.useNotification();
   return (
-    <NotificationContext.Provider value={notification}>
+    <NotificationContext.Provider value={api}>
+      {contextHolder}
       <SidebarProvider className="bg-black-opacity-80">
         <AppSidebar />
         <main className="flex text-white w-full">
