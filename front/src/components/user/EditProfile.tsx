@@ -18,9 +18,14 @@ import { NotificationContext } from '../layout/Layout';
 interface EditProfileProps {
   user: User;
   setIsEdit: Dispatch<SetStateAction<boolean>>;
+  loadUser: () => Promise<void>;
 }
 
-export const EditProfile: FC<EditProfileProps> = ({ user, setIsEdit }) => {
+export const EditProfile: FC<EditProfileProps> = ({
+  user,
+  setIsEdit,
+  loadUser,
+}) => {
   const { id, iconUrl, selfIntroduction, username } = user;
   const notification = useContext(NotificationContext);
   const {
@@ -120,6 +125,7 @@ export const EditProfile: FC<EditProfileProps> = ({ user, setIsEdit }) => {
         placement: 'top',
       });
       setIsEdit(false);
+      await loadUser();
     } catch {
       notification?.open({
         message: <p className="text-red-600">クイズの編集が失敗しました</p>,
