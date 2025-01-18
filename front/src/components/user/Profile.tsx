@@ -1,7 +1,7 @@
-import { FC, useState } from 'react';
+import { FC, useContext, useEffect, useState } from 'react';
 
 import { User } from '../../type/user';
-import { Pencil, PencilOff } from 'lucide-react';
+import { CircleX, Pencil, PencilOff } from 'lucide-react';
 import { Button } from '../ui/button/button';
 import {
   Tooltip,
@@ -12,19 +12,45 @@ import {
 import { ViewProfile } from './ViewProfile';
 import { EditProfile } from './EditProfile';
 import { CancelEditConfirmDialog } from '../ui/alert-dialog/alert-dialog';
+import { getUserById } from '../../api/user';
+import { NotificationContext } from '../layout/Layout';
 
-interface ProfileProps {
-  user?: User;
-}
-
-export const Profile: FC<ProfileProps> = ({ user }) => {
+export const Profile: FC = () => {
   const [isEdit, setIsEdit] = useState(false);
+  const [user, setUser] = useState<User>();
+  const notification = useContext(NotificationContext);
+  const loadUser = async () => {
+    try {
+      const userId = localStorage.getItem('userId');
+      if (!userId) {
+        throw new Error();
+      }
+      const res = await getUserById(userId);
+      setUser(res);
+    } catch {
+      notification?.open({
+        message: (
+          <p className="text-red-600">ユーザー情報が取得できませんでした</p>
+        ),
+        description: (
+          <p className="text-red-600">
+            再度ログインするか時間を空けてお試しください
+          </p>
+        ),
+        icon: <CircleX size={28} color="#ff0000" />,
+        placement: 'top',
+      });
+    }
+  };
   const onClickEdit = () => {
     setIsEdit(true);
   };
   const onClickCancelEdit = () => {
     setIsEdit(false);
   };
+  useEffect(() => {
+    loadUser();
+  }, []);
   return (
     <>
       <div className="bg-zinc-900 rounded-md mt-28 h-fit p-5 mr-5 min-w-64 flex max-sm:flex-col sm:flex relative">
@@ -65,7 +91,11 @@ export const Profile: FC<ProfileProps> = ({ user }) => {
         </div>
         <div className="w-full">
           {isEdit && user ? (
-            <EditProfile user={user} setIsEdit={setIsEdit} />
+            <EditProfile
+              user={user}
+              setIsEdit={setIsEdit}
+              loadUser={loadUser}
+            />
           ) : (
             <ViewProfile user={user} />
           )}

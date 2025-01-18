@@ -34,7 +34,12 @@ export const ViewProfile: FC<ViewProfileProps> = ({ user }) => {
         <div className="mt-10">
           <Label>自己紹介</Label>
           <div className="mt-2">
-            <span className="text-xl">{user?.selfIntroduction}</span>
+            {user?.selfIntroduction?.split('\n').map((line, index) => (
+              <span key={index}>
+                {line}
+                <br />
+              </span>
+            ))}
           </div>
         </div>
       </div>
