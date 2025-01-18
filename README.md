@@ -20,7 +20,10 @@
 |  <img width="1423" alt="スクリーンショット 2025-01-18 16 02 27" src="https://github.com/user-attachments/assets/2cd36c73-ed6e-4c8f-8d5d-2e652ab7db23" />　| <img width="1423" alt="スクリーンショット 2025-01-18 16 05 38" src="https://github.com/user-attachments/assets/0f2b03df-eff0-45f1-8176-02a9d9b1abf0" />| 
 | こちらからクイズを投稿できます。                                                                                                                            | 投稿したクイズを確認することができます。<br> アクションバーから編集、削除が行えます。                                                    | 
 
-
+| クイズ回答画面                                                                                                                                           |
+|:-----------:                                                                                                                                          |
+|  <img width="1429" alt="スクリーンショット 2025-01-18 16 36 18" src="https://github.com/user-attachments/assets/7e10961e-c2e9-4b54-b10f-e39367a75a87" /> | 
+| 選択肢のボタンを押してもらうことでクイズの回答ができます。<br/> 全てのユーザーが投稿したクイズが合計10問出題されます。                                                                   |
 
 ## 使用技術
 
