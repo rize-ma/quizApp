@@ -122,7 +122,7 @@ export const QuizList: FC = () => {
         <title>クイズ一覧</title>
       </Helmet>
       <div className="w-full mr-5 mt-5 lg:mr-5 lg:p-2 md:m-5 md:p-2">
-        {isLoading && <Spin fullscreen tip="Loading..." size="large" />}
+        <Spin fullscreen tip="Loading..." size="large" spinning={isLoading} />
         <h1 className="text-2xl">クイズ一覧</h1>
         <div className="mt-10">
           <div className="mb-7">
