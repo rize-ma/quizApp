@@ -40,7 +40,7 @@ export const QuizItem: FC<QuizItemProps> = ({
           <span>{quiz.question}</span>
         </div>
       </div>
-      <div className="flex justify-center  w-full mt-40">
+      <div className="flex justify-center w-full mt-40">
         <div
           className="w-10/12 mx-auto grid gap-4
                 grid-cols-1
@@ -102,7 +102,7 @@ export const QuizItem: FC<QuizItemProps> = ({
         </div>
       </div>
       <div
-        className={clsx('w-full mt-40 flex justify-center', {
+        className={clsx('w-full mt-40 pb-5 flex justify-center', {
           hidden: Boolean(!selectedAnswer),
         })}
       >
