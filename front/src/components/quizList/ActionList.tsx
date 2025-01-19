@@ -24,7 +24,6 @@ export const ActionList: FC<ActionListProps> = ({
   onClickDelete,
   isSticky,
 }) => {
-  console.log(isSticky);
   const isQuizSelected = Boolean(selectedQuizzes.length);
   return (
     <div
