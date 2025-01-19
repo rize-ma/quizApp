@@ -43,11 +43,11 @@ export const QuizPlay: FC = () => {
       <Helmet>
         <title>クイズに挑戦中</title>
       </Helmet>
-      <div className="bg-black-opacity-80 w-full h-screen text-white">
+      <div className="bg-black-opacity-80 w-full min-h-screen text-white">
         {quizzes.map((quiz, index) => (
           <div
             key={quiz.id}
-            className={clsx('w-full h-screen', {
+            className={clsx('w-full', {
               hidden: index + 1 !== currentQuestion,
             })}
           >
