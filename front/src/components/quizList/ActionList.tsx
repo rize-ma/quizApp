@@ -9,21 +9,35 @@ import { FC } from 'react';
 import { Button } from '../ui/button/button';
 import { DataSource } from '../../utils/tableData';
 import { DeleteConfirmDialog } from '../ui/alert-dialog/alert-dialog';
+import { clsx } from 'clsx';
 
 interface ActionListProps {
   selectedQuizzes: DataSource[];
   onClickEdit: () => void;
   onClickDelete: () => void;
+  isSticky: boolean;
 }
 
 export const ActionList: FC<ActionListProps> = ({
   selectedQuizzes,
   onClickEdit,
   onClickDelete,
+  isSticky,
 }) => {
+  console.log(isSticky);
   const isQuizSelected = Boolean(selectedQuizzes.length);
   return (
-    <div className="rounded-md bg-zinc-900 text-white w-full flex items-center px-5 h-12 max-sm:justify-around">
+    <div
+      className={clsx(
+        'rounded-md w-full flex items-center px-5 h-12 max-sm:justify-around',
+        {
+          'bg-zinc-900': !isSticky,
+          'text-white': !isSticky,
+          'bg-zinc-400': isSticky,
+          'text-black': isSticky,
+        },
+      )}
+    >
       <div className="mr-10 flex items-center">
         <TooltipProvider>
           <Tooltip>

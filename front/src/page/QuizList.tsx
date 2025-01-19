@@ -10,7 +10,7 @@ import { ListTabel } from '@/components/quizList/ListTable';
 import { Spin } from 'antd';
 import { ColumnsType } from 'antd/es/table/interface';
 import { Check, CircleX } from 'lucide-react';
-import { FC, useContext, useEffect, useState } from 'react';
+import { FC, useContext, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { NotificationContext } from '@/components/layout/Layout';
@@ -22,6 +22,9 @@ export const QuizList: FC = () => {
   const [isLoading, setLoading] = useState(false);
   const [columns, setColumns] = useState<ColumnsType<DataSource>>([]);
   const [dataSource, setDataSource] = useState<DataSource[]>([]);
+  const [isSticky, setIsSticky] = useState(false);
+  const sentinelRef = useRef<HTMLDivElement>(null);
+
   const width = useWindowWidth();
   const fetchDataSource = async () => {
     const fetchedData = await createDataSource(notification);
@@ -37,6 +40,27 @@ export const QuizList: FC = () => {
   useEffect(() => {
     setColumns(createColumns(width));
   }, [width]);
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsSticky(!entry.isIntersecting);
+      },
+      {
+        root: null,
+        threshold: 1.0,
+      },
+    );
+
+    if (sentinelRef.current) {
+      observer.observe(sentinelRef.current);
+    }
+
+    return () => {
+      if (sentinelRef.current) {
+        observer.unobserve(sentinelRef.current);
+      }
+    };
+  }, []);
   const onClickEdit = () => {
     switch (selectedQuizzes.length) {
       case 0:
@@ -125,11 +149,13 @@ export const QuizList: FC = () => {
         <Spin fullscreen tip="Loading..." size="large" spinning={isLoading} />
         <h1 className="text-2xl">クイズ一覧</h1>
         <div className="mt-10">
-          <div className="mb-7">
+          <div ref={sentinelRef} />
+          <div className="mb-7 sticky top-10 z-10">
             <ActionList
               selectedQuizzes={selectedQuizzes}
               onClickEdit={onClickEdit}
               onClickDelete={onClickDelete}
+              isSticky={isSticky}
             />
           </div>
           <ListTabel
