@@ -16,7 +16,7 @@ export const Layout: FC<LayoutProps> = ({ children }) => {
   return (
     <NotificationContext.Provider value={api}>
       {contextHolder}
-      <SidebarProvider className="bg-black-opacity-80 h-screen">
+      <SidebarProvider className="bg-black-opacity-80">
         <AppSidebar />
         <main className="flex text-white w-full">
           <SidebarTrigger className="mr-5 bg-zinc-900 hover:bg-white hover:text-black" />
