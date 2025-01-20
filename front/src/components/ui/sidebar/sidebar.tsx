@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Slot } from '@radix-ui/react-slot';
 import { VariantProps, cva } from 'class-variance-authority';
-import { PanelLeft } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 import { cn } from 'src/lib/utils';
 import { Button } from '@/components/ui/sidebar/button';
 import { Input } from '@/components/ui/sidebar/input';
@@ -276,23 +276,27 @@ const SidebarTrigger = React.forwardRef<
   React.ElementRef<typeof Button>,
   SidebarTriggerProps
 >(({ className, onClick, ...props }, ref) => {
-  const { toggleSidebar } = useSidebar();
+  const { toggleSidebar, open } = useSidebar();
 
   return (
     <Button
       ref={ref}
       data-sidebar="trigger"
       variant="ghost"
-      size="icon"
-      className={cn('h-7 w-7', className)}
+      className={cn('h-12 w-12', className)}
       onClick={(event) => {
         onClick?.(event);
         toggleSidebar();
       }}
       {...props}
     >
-      <PanelLeft />
-      <span className="sr-only">Toggle Sidebar</span>
+      <div className="text-3xl">
+        {open ? (
+          <X size={36} strokeWidth={2} />
+        ) : (
+          <Menu size={36} strokeWidth={2} />
+        )}
+      </div>
     </Button>
   );
 });
