@@ -31,6 +31,6 @@
 |:-----------    |:------------                                                           |
 | Frontend       | TypeScript, Vite-react, Storybook, Tailwindcss, shadcn/ui, antd, etc...| 
 | Backend        | Rust, actix-web,  diesel, etc...                                       | 
-| Infrastructure | Vercel, render, firebase                                               |
+| Infrastructure | Vercel, render, Neon, firebase                                               |
 | Database       | PostgreSQL                                                             |
 | CI/CD          | GitHub Actions                                                         |
